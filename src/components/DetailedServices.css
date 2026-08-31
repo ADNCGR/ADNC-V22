@@ -1,0 +1,120 @@
+.detailed-services {
+  padding-bottom: 80px;
+}
+
+.detailed-list {
+  max-width: 1000px;
+  margin: 0 auto 60px;
+  border-top: 1px solid var(--color-border);
+}
+
+.detailed-item {
+  border-bottom: 1px solid var(--color-border);
+  padding: 40px 0;
+  cursor: pointer;
+  transition: padding 0.5s var(--easing-slow);
+}
+
+.detailed-item:hover {
+  padding: 60px 0;
+}
+
+.detailed-item-header {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.detailed-id {
+  font-family: var(--font-hero);
+  font-size: 80px;
+  font-weight: 400;
+  color: var(--color-border); /* VERY subtle initially */
+  transition: color 0.5s var(--easing-slow);
+}
+
+.detailed-item:hover .detailed-id {
+  color: var(--color-text-dark);
+}
+
+.detailed-title {
+  font-family: var(--font-hero);
+  font-size: 40px;
+  letter-spacing: -1px;
+}
+
+.detailed-content {
+  overflow: hidden;
+  padding-left: 120px; /* Aligned with title */
+}
+
+.detailed-content p {
+  padding-top: 24px;
+  font-size: 20px;
+  color: var(--color-text-muted);
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+.view-all-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 120px;
+}
+
+.view-all-btn {
+  font-family: var(--font-accent);
+  font-size: 16px;
+  font-weight: 500;
+  padding: 16px 32px;
+  border: 1px solid var(--color-border);
+  border-radius: 100px;
+  transition: all 0.4s var(--easing-slow);
+}
+
+.view-all-btn:hover {
+  background: var(--color-text-dark);
+  color: var(--color-text-light);
+}
+
+/* Secondary Marquee */
+.marquee-secondary-container {
+  width: 100%;
+  overflow: hidden;
+  padding: 24px 0;
+  border-top: 1px dashed rgba(0,0,0,0.1);
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+}
+
+.marquee-secondary-scroll {
+  display: flex;
+  width: max-content;
+  animation: scrollSecondaryMarquee 20s linear infinite;
+}
+
+.marquee-secondary-content {
+  display: flex;
+  white-space: nowrap;
+}
+
+.marquee-secondary-content span {
+  font-family: var(--font-accent);
+  font-size: 18px;
+  color: var(--color-text-muted);
+  margin-right: 32px;
+}
+
+@keyframes scrollSecondaryMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@media (max-width: 768px) {
+  .detailed-item-header {
+    gap: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .detailed-id { font-size: 60px; }
+  .detailed-content { padding-left: 0; }
+}

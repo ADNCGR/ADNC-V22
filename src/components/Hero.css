@@ -1,0 +1,134 @@
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-top: 120px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 900px;
+}
+
+.hero-title {
+  font-family: var(--font-hero);
+  font-size: clamp(60px, 9vw, 130px);
+  line-height: 1;
+  letter-spacing: -3px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 48px;
+}
+
+.hero-line {
+  overflow: hidden;
+}
+
+.hero-highlight {
+  display: inline-block;
+  color: var(--color-text-dark);
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.btn-primary {
+  background: var(--color-text-dark);
+  color: var(--color-text-light);
+  padding: 16px 32px;
+  border-radius: 100px;
+  font-family: var(--font-accent);
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.4s var(--easing-slow), background 0.4s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background: #000;
+}
+
+.btn-primary:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+.btn-arrow {
+  transition: transform 0.4s var(--easing-slow);
+}
+
+.btn-secondary {
+  padding: 16px 32px;
+  font-family: var(--font-accent);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  transition: opacity 0.3s ease;
+}
+
+.btn-secondary:hover {
+  opacity: 0.6;
+}
+
+/* 3D Cube */
+.hero-visual {
+  position: absolute;
+  right: 10%;
+  top: 45%;
+  transform: translateY(-50%);
+  width: 300px;
+  height: 300px;
+  perspective: 1000px;
+  z-index: 1;
+}
+
+.cube-container {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: rotateCube 20s infinite linear;
+}
+
+.cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.cube-face {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  left: 50px;
+  top: 50px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+.front  { transform: translateZ(100px); }
+.back   { transform: rotateY(180deg) translateZ(100px); }
+.right  { transform: rotateY(90deg) translateZ(100px); }
+.left   { transform: rotateY(-90deg) translateZ(100px); }
+.top    { transform: rotateX(90deg) translateZ(100px); }
+.bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+@keyframes rotateCube {
+  0% { transform: rotateX(0deg) rotateY(0deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+@media (max-width: 1024px) {
+  .hero-visual {
+    opacity: 0.3;
+    right: -10%;
+  }
+}

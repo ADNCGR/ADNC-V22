@@ -1,0 +1,438 @@
+/* ════════════════════════════════════════════════════════════ */
+/*         CONSULTING MODE STANDARD COMPONENTS STYLES          */
+/*       Shared across: Home, Services, Process, About, Contact */
+/* ════════════════════════════════════════════════════════════ */
+
+/* ========================================================== */
+/*   1. CONSULTING NAVBAR (underline active, pill border)     */
+/* ========================================================== */
+.cs-nav-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+.cs-navbar {
+  width: 100%;
+  max-width: 1440px;
+  border: 1.5px solid #000;
+  border-radius: 999px;
+  background: #fff;
+  padding: 18px 36px 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  box-sizing: border-box;
+  height: 84px;
+}
+
+.cs-nav-logo {
+  height: 60px;
+  width: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.cs-nav-logo svg {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 220px;
+}
+
+.cs-nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 90px;
+  flex: 1;
+  justify-content: center;
+}
+
+.cs-nav-links li {
+  margin: 0;
+  padding: 0;
+}
+
+.cs-nav-links a {
+  font-family: 'Fustat', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1;
+  color: #000;
+  text-decoration: none;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease, font-weight 0.15s ease, font-size 0.15s ease;
+  display: inline-block;
+}
+
+.cs-nav-links a:hover {
+  color: #333;
+}
+
+.cs-nav-links a.cs-active {
+  font-weight: 800;
+  font-size: 32px;
+  border-bottom-color: #000;
+  padding-bottom: 1px;
+}
+
+.cs-nav-spacer {
+  width: 220px;
+  flex-shrink: 0;
+  visibility: hidden;
+}
+
+/* ========================================================== */
+/*   2. CONSULTING TAB SWITCHER (Dev small / Cons big black)  */
+/* ========================================================== */
+.cs-tab-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+.cs-tab-switcher {
+  background: #E4E4E4;
+  border-radius: 999px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 332px;
+  height: 58px;
+  box-sizing: border-box;
+}
+
+.cs-tab {
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.cs-tab-dev {
+  width: 128px;
+  height: 44px;
+  color: #454747;
+  background: transparent;
+}
+
+.cs-tab-dev.cs-tab-active {
+  background: transparent;
+  color: #454747;
+}
+
+.cs-tab-cons {
+  flex: 1;
+  min-width: 157px;
+  height: 46px;
+  color: #454747;
+  background: transparent;
+}
+
+.cs-tab-cons.cs-tab-active {
+  background: #000;
+  color: #fff;
+}
+
+/* ========================================================== */
+/*   3. CONSULTING FOOTER (border-top, 2 rows: logo+cta / 2 cols) */
+/* ========================================================== */
+.cs-footer {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  border-top: 1px solid #000;
+  padding: 64px 120px 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  background: #fff;
+  color: #000;
+}
+
+.cs-footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.cs-footer-logo {
+  height: 60px;
+  width: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.cs-footer-logo svg {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 260px;
+}
+
+.cs-footer-cta {
+  min-height: 44px;
+  background: #000;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 36px 0 44px;
+  font-family: 'Fustat', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+  margin-top: 8px;
+}
+
+.cs-footer-cta:hover {
+  opacity: 0.88;
+}
+
+.cs-footer-cta-dot {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+  display: block;
+}
+
+.cs-footer-bottom {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 80px;
+  align-items: flex-start;
+}
+
+.cs-footer-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  max-width: 560px;
+}
+
+.cs-footer-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  justify-self: start;
+}
+
+.cs-footer-col-title {
+  font-family: 'Fustat', sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 149%;
+  color: #000;
+  margin: 0;
+}
+
+.cs-footer-desc {
+  font-family: 'Fustat', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 149%;
+  color: #000;
+  margin: 0;
+  max-width: 545px;
+}
+
+.cs-footer-location {
+  font-family: 'Fustat', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 149%;
+  color: #000;
+  margin: 0;
+}
+
+.cs-footer-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cs-footer-links li {
+  margin: 0;
+  padding: 0;
+}
+
+.cs-footer-links a {
+  font-family: 'Fustat', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 186%;
+  color: #000;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.cs-footer-links a:hover {
+  opacity: 0.65;
+}
+
+/* ========================================================== */
+/*   RESPONSIVE — CONSULTING STANDARD COMPONENTS              */
+/* ========================================================== */
+@media (max-width: 1200px) {
+  .cs-nav-wrapper,
+  .cs-tab-wrapper {
+    padding: 0 24px;
+  }
+  .cs-nav-links {
+    gap: 50px;
+  }
+  .cs-navbar {
+    padding: 14px 24px 14px 18px;
+    height: auto;
+    min-height: 72px;
+  }
+  .cs-nav-logo {
+    height: 48px;
+  }
+  .cs-nav-spacer {
+    width: 160px;
+  }
+  .cs-footer {
+    padding: 56px 60px 60px;
+    gap: 64px;
+  }
+  .cs-footer-bottom {
+    grid-template-columns: 1.5fr 1fr;
+    gap: 60px;
+  }
+  .cs-footer-left-col {
+    max-width: 100%;
+    gap: 48px;
+  }
+}
+
+@media (max-width: 900px) {
+  .cs-navbar {
+    flex-direction: column;
+    gap: 14px;
+    border-radius: 32px;
+    padding: 20px 24px;
+  }
+  .cs-nav-spacer {
+    display: none;
+  }
+  .cs-nav-links {
+    gap: 32px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .cs-nav-links a {
+    font-size: 18px;
+  }
+  .cs-nav-links a.cs-active {
+    font-size: 22px;
+  }
+  .cs-footer {
+    padding: 48px 30px 48px;
+    gap: 48px;
+  }
+  .cs-footer-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .cs-footer-bottom {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .cs-footer-left-col {
+    gap: 32px;
+  }
+  .cs-footer-desc,
+  .cs-footer-location,
+  .cs-footer-links a {
+    font-size: 17px;
+  }
+  .cs-footer-col-title {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 580px) {
+  .cs-nav-links {
+    gap: 20px;
+  }
+  .cs-nav-links a {
+    font-size: 16px;
+  }
+  .cs-nav-links a.cs-active {
+    font-size: 20px;
+  }
+  .cs-tab-switcher {
+    width: 280px;
+    height: 52px;
+  }
+  .cs-tab {
+    font-size: 14px;
+  }
+  .cs-tab-dev {
+    width: 108px;
+    height: 40px;
+  }
+  .cs-tab-cons {
+    min-width: 132px;
+    height: 42px;
+  }
+  .cs-footer {
+    padding: 36px 20px 40px;
+  }
+  .cs-footer-cta {
+    width: 100%;
+    justify-content: center;
+    font-size: 15px;
+    padding: 0 24px 0 36px;
+  }
+  .cs-footer-desc,
+  .cs-footer-location,
+  .cs-footer-links a {
+    font-size: 15px;
+  }
+  .cs-footer-col-title {
+    font-size: 22px;
+  }
+}

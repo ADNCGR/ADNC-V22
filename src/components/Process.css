@@ -1,0 +1,82 @@
+.process-section {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-light);
+  padding-top: 160px;
+  padding-bottom: 160px;
+}
+
+.process-header {
+  max-width: 1000px;
+  margin: 0 auto 100px;
+}
+
+.process-title {
+  font-family: var(--font-hero);
+  font-size: clamp(48px, 6vw, 80px);
+  line-height: 1.1;
+  letter-spacing: -2px;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.4) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.process-steps {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.process-step {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 32px;
+  cursor: pointer;
+  transition: border-color 0.4s var(--easing-slow);
+}
+
+.process-step:hover {
+  border-color: rgba(255,255,255,0.8);
+}
+
+.step-number {
+  font-family: var(--font-hero);
+  font-size: 64px;
+  color: rgba(255,255,255,0.1);
+  margin-bottom: 16px;
+  transition: color 0.4s var(--easing-slow), transform 0.4s var(--easing-slow);
+}
+
+.process-step:hover .step-number {
+  color: #fff;
+  transform: translateY(-8px);
+}
+
+.step-title {
+  font-family: var(--font-hero);
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
+.step-description {
+  overflow: hidden;
+}
+
+.step-description p {
+  color: rgba(255,255,255,0.6);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-bottom: 16px;
+}
+
+@media (max-width: 1024px) {
+  .process-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .process-steps {
+    grid-template-columns: 1fr;
+  }
+}

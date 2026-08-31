@@ -1,0 +1,35 @@
+.final-cta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 160px;
+  padding-bottom: 160px;
+}
+
+.cta-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 800px;
+}
+
+.cta-title {
+  font-family: var(--font-hero);
+  font-size: clamp(48px, 6vw, 80px);
+  line-height: 1.1;
+  letter-spacing: -2px;
+  margin-bottom: 24px;
+}
+
+.cta-description {
+  font-family: var(--font-accent);
+  font-size: 20px;
+  color: var(--color-text-muted);
+  margin-bottom: 48px;
+}
+
+.cta-btn {
+  font-size: 18px;
+  padding: 20px 40px;
+}
