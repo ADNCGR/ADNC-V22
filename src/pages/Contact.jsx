@@ -1,200 +1,149 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import ConsultingNavbar from '../components/ConsultingNavbar';
-import ConsultingTabSwitcher from '../components/ConsultingTabSwitcher';
 import ConsultingFooter from '../components/ConsultingFooter';
 import { useMode } from '../context/ModeContext';
+import { useReveal } from '../hooks/useScrollFx';
 import './Contact.css';
 
-// Development Version (Original)
-const DevelopmentContact = () => {
-  const [activeTab, setActiveTab] = useState(0);
-  const [selectedBudget, setSelectedBudget] = useState('not yet defined');
+const BUDGETS = ['Up to $50k', '$50k-$150K', '$150K-$500K', '$500k +'];
 
-  const budgetOptions = ['Up to $50k', '$50k–$150K', '$150K–$500K', '$500k +'];
+const COPY = {
+  development: {
+    titleA: 'Tell us ',
+    titleOutline: 'the problem',
+    titleB: ' nobody else would take.',
+    lede: [
+      'A description of the problem is enough.',
+      'A specification is not required and at this stage rarely helps.',
+      'Every enquiry is read by a senior engineer, and you will hear back within one business day.',
+    ],
+    groups: null,
+    lastLabel: 'The problem',
+    lastPlaceholder: 'Unfinished is fine. Unreasonable is welcome.',
+    submit: 'Send',
+    doneTitle: 'Received',
+    doneLead: 'This is read by an engineer, not a filter.',
+    doneBody:
+      'You will hear back within one business day, including if the answer is that we are not the right team for it.',
+  },
+  consulting: {
+    titleA: 'Tell us ',
+    titleOutline: 'the decision',
+    titleB: ' you cannot afford to get wrong.',
+    lede: [
+      'Describe the context, the constraints, the timeline, and the body the decision reports to.',
+      'A senior member of the practice will respond within one business day.',
+      'Everything you send is treated as confidential.',
+    ],
+    groups: { contact: 'Contact information', context: 'Institutional context' },
+    lastLabel: 'The decision',
+    lastPlaceholder: 'Include what has already been considered and rejected, if relevant.',
+    submit: 'Submit enquiry',
+    doneTitle: 'Enquiry received.',
+    doneLead: '',
+    doneBody:
+      'It will be reviewed by a senior member of the practice, and you will have a substantive response within one business day.',
+  },
+};
+
+const Contact = () => {
+  const { mode } = useMode();
+  const isConsulting = mode === 'consulting';
+  const copy = COPY[isConsulting ? 'consulting' : 'development'];
+
+  const [sent, setSent] = useState(false);
+  const [budget, setBudget] = useState('');
+
+  useReveal([mode, sent]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSent(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const rootClass = `ct-root${isConsulting ? ' ct-root--cons' : ''}`;
+
+  if (sent) {
+    return (
+      <div className={rootClass}>
+        <Navbar />
+        <section className="ct-done">
+          <span className="u-glow ct-done-glow" aria-hidden="true" />
+          <h1 className="reveal">{copy.doneTitle}</h1>
+          {copy.doneLead && <p className="ct-done-lead reveal">{copy.doneLead}</p>}
+          <p className="ct-done-body reveal">{copy.doneBody}</p>
+        </section>
+        {isConsulting ? <ConsultingFooter /> : <Footer />}
+      </div>
+    );
+  }
 
   return (
-    <div className="contact-page">
+    <div className={rootClass}>
       <Navbar />
 
-      <main className="wrap">
+      <section className="ct-main">
+        <h1 className="ct-title reveal">
+          {copy.titleA}
+          <span className={isConsulting ? 'u-outline-dark' : 'u-outline'}>{copy.titleOutline}</span>
+          {copy.titleB}
+        </h1>
 
-        <section className="hero">
-          <h1>Tell us <span className="outline">the problem</span><br />nobody else would take.</h1>
-        </section>
-
-        <hr className="divider" />
-
-        <section className="contact-section">
-          <div className="contact-copy">
-            <p>A description of the problem is enough.<br />
-            A specification is not required and at this stage rarely helps.<br />
-            Every enquiry is read by a senior engineer, and you will hear back within one business day.</p>
-
-            <span className="avail">Available worldwide &middot; HQ Casablanca, Morocco</span>
+        <div className="ct-body">
+          <div className="ct-aside reveal-left">
+            <div className="ct-lede">
+              {copy.lede.map((l) => <p key={l}>{l}</p>)}
+            </div>
+            <p className="ct-location">Available worldwide · HQ Casablanca, Morocco</p>
           </div>
 
-          <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
-            <div className="field"><input type="text" placeholder="Name" /></div>
-            <div className="field"><input type="email" placeholder="Email" /></div>
-            <div className="field"><input type="text" placeholder="Organisation" /></div>
+          <form className="ct-form reveal-right" onSubmit={handleSubmit} noValidate>
+            {copy.groups && <p className="ct-group">{copy.groups.contact}</p>}
 
-            <div className="field-label">Expected budget</div>
-            <div className="budget-select mono">{selectedBudget}</div>
-            <div className="budget-pills">
-              {budgetOptions.map((opt) => (
+            <input type="text" name="name" placeholder="Name" required autoComplete="name" />
+            <input type="email" name="email" placeholder="Email" required autoComplete="email" />
+
+            {copy.groups && <p className="ct-group">{copy.groups.context}</p>}
+
+            <input type="text" name="organisation" placeholder="Organisation" autoComplete="organization" />
+            {copy.groups && <input type="text" name="sector" placeholder="Sector" />}
+
+            <p className="ct-group">Expected budget</p>
+
+            <div className="ct-select">
+              <span>{budget || 'not yet defined'}</span>
+            </div>
+
+            <div className="ct-chips">
+              {BUDGETS.map((b) => (
                 <button
                   type="button"
-                  key={opt}
-                  className={selectedBudget === opt ? 'active' : ''}
-                  onClick={() => setSelectedBudget(opt)}
+                  key={b}
+                  className={`ct-chip${budget === b ? ' is-on' : ''}`}
+                  onClick={() => setBudget((v) => (v === b ? '' : b))}
                 >
-                  {opt}
+                  {b}
                 </button>
               ))}
             </div>
 
-            <div className="field-label">The problem</div>
-            <textarea className="problem" placeholder="Unfinished is fine. Unreasonable is welcome."></textarea>
+            <p className="ct-group">{copy.lastLabel}</p>
+            <textarea name="detail" rows={6} placeholder={copy.lastPlaceholder} />
 
-            <button type="submit" className="send-btn">Send &rarr;</button>
+            <button type="submit" className="ct-submit">
+              <span className="ct-submit-arrow" aria-hidden="true">→</span>
+              {copy.submit}
+              <span className="ct-submit-arrow ct-submit-arrow--r" aria-hidden="true">→</span>
+            </button>
           </form>
-        </section>
-
-        <hr className="divider" />
-
-        <Footer />
-      </main>
-    </div>
-  );
-};
-
-// Consulting Version (New Design - Standard components)
-const ConsultingContact = () => {
-  const [selectedBudget, setSelectedBudget] = useState('not yet defined');
-
-  const budgetOptions = ['Up to $50k', '$50k-$150K', '$150K-$500K', '$500k +'];
-
-  const handleBudgetSelect = (budget) => {
-    setSelectedBudget(budget);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
-  return (
-    <div className="consulting-contact-page">
-
-      <ConsultingNavbar />
-      <ConsultingTabSwitcher />
-
-      {/* PAGE CONTENT */}
-      <div className="cc-page-content">
-
-        <div className="cc-contact-main">
-
-          {/* Hero Title */}
-          <h1 className="cc-hero-title">Tell us <span className="cc-outline-text">the decision</span> you cannot afford to get wrong.</h1>
-
-          {/* Form Area */}
-          <div className="cc-form-area">
-
-            {/* Left column - Description */}
-            <div className="cc-form-left">
-              <p className="cc-form-intro">
-                Describe the context, the constraints, the timeline, and the body the decision reports to.<br/>
-                A senior member of the practice will respond within one business day.<br/>
-                Everything you send is treated as <strong>confidential</strong>.
-              </p>
-              <p className="cc-form-location">Available worldwide · HQ Casablanca, Morocco</p>
-            </div>
-
-            {/* Right column - Form Card */}
-            <div className="cc-form-card">
-              <form onSubmit={handleSubmit}>
-                {/* Contact Information */}
-                <div className="cc-form-group">
-                  <div className="cc-form-section-title">Contact information</div>
-                  <input type="text" className="cc-form-input" placeholder="Name"/>
-                  <input type="email" className="cc-form-input" placeholder="Email"/>
-                </div>
-
-                {/* Institutional Context */}
-                <div className="cc-form-group">
-                  <div className="cc-form-section-title">Institutional context</div>
-                  <input type="text" className="cc-form-input" placeholder="Organisation"/>
-                  <input type="text" className="cc-form-input" placeholder="Sector"/>
-                </div>
-
-                {/* Expected Budget */}
-                <div className="cc-budget-section">
-                  <div className="cc-form-section-title-medium">Expected budget</div>
-                  <select
-                    className="cc-budget-dropdown"
-                    value={selectedBudget}
-                    onChange={(e) => setSelectedBudget(e.target.value)}
-                  >
-                    <option value="not yet defined" disabled>not yet defined</option>
-                    {budgetOptions.map(opt => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
-                  <div className="cc-budget-options">
-                    {budgetOptions.map((opt) => (
-                      <button
-                        type="button"
-                        key={opt}
-                        className={`cc-budget-chip ${selectedBudget === opt ? 'cc-selected' : ''}`}
-                        onClick={() => handleBudgetSelect(opt)}
-                      >
-                        {opt}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* The Decision */}
-                <div className="cc-decision-section">
-                  <div className="cc-form-section-title-medium">The decision</div>
-                  <textarea
-                    className="cc-form-textarea"
-                    placeholder="Include what has already been considered and rejected, if relevant."
-                  ></textarea>
-                </div>
-
-                {/* Submit */}
-                <button type="submit" className="cc-submit-btn">
-                  <span>Submit enquiry</span>
-                  <svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1L14 9.5L1 18" stroke="white" strokeWidth="2" fill="none"/>
-                  </svg>
-                </button>
-              </form>
-            </div>
-
-          </div>
         </div>
+      </section>
 
-        <ConsultingFooter />
-
-      </div>
+      {isConsulting ? <ConsultingFooter /> : <Footer />}
     </div>
   );
-};
-
-// Main Contact Component
-const Contact = () => {
-  const { mode } = useMode();
-
-  // Render different version based on mode
-  if (mode === 'consulting') {
-    return <ConsultingContact />;
-  }
-  
-  return <DevelopmentContact />;
 };
 
 export default Contact;

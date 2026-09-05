@@ -1,360 +1,349 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import ConsultingNavbar from '../components/ConsultingNavbar';
-import ConsultingTabSwitcher from '../components/ConsultingTabSwitcher';
 import ConsultingFooter from '../components/ConsultingFooter';
 import { useMode } from '../context/ModeContext';
+import { useReveal } from '../hooks/useScrollFx';
+
+import heroBg from '../assets/hero-services.jpg';
+import pin from '../assets/figma/pin.png';
+import eqBar from '../assets/figma/eq-bar.png';
+import icons3d from '../assets/figma/3dicons.png';
+
 import './Services.css';
 
-// Development Version (Original)
+/* ================================================================
+   PAGE 2 — THE LAB / SERVICES (mode Development) — Figma 22:2720
+   ================================================================ */
+
+const INPUT_LINES = [
+  '[01]: Idea excavation & concept framing',
+  '[02]: Applied research & technical spikes',
+  '[03]: AI / ML experimentation',
+  '[04]: Algorithm & system design',
+  '[05]: Rapid prototyping',
+];
+
+const OUTPUT_LINES = [
+  '[01]: Complex web platforms (React, Next, TanStack)',
+  '[02]: Native iOS (Swift, SwiftUI) & Android (Kotlin, Compose)',
+  '[03]: Distributed & real-time backends',
+  '[04]: Deployment, scaling & observability',
+  '[05]: Security, incident response & on-call',
+];
+
+const PASS_LINES = [
+  '[PASS]: Systems with no precedent.',
+  '[PASS]: Constraints the market has decided are unreachable.',
+  '[PASS]: Problems sitting between two fields that nobody has connected.',
+  '[PASS]: Projects other teams have already declared unsalvageable.',
+];
+
+const REJECT_LINES = [
+  '[REJECTED]: Template work, and copies of things\n            that already exist.',
+  '[REJECTED]: Engagements where the outcome rests on assumptions\n            we are not allowed to test.',
+  '[REJECTED]: Anything we cannot do exceptionally well.',
+  '[REJECTED]: We would rather send you to someone better\n            than deliver you something adequate.',
+];
+
+const OFFERS = [
+  {
+    title: 'Feasibility\nengagement',
+    body: 'A fixed scope research phase that ends in a written report. Often the most useful money a client spends with us.',
+  },
+  {
+    title: 'Build\nwith us',
+    body: 'You hold the vision. We bring the senior team and take it to production.',
+  },
+  {
+    title: 'Build and\noperate',
+    body: 'We design it, build it and run it. One team, one accountability, no handover.',
+  },
+  {
+    title: 'Recover and\nrebuild',
+    body: 'A stalled or broken project, inherited without judgment, stabilised, and shipped.',
+  },
+];
+
 const DevelopmentServices = () => {
-  const container = useRef();
-  const [activeTab, setActiveTab] = useState(0);
-
-  const handleScrollTo = (e, id) => {
-    e.preventDefault();
-    const t = document.getElementById(id);
-    if (t) {
-      window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 90, behavior: 'smooth' });
-    }
-  };
-
-  useEffect(() => {
-    const navHolder = document.getElementById('navHolder');
-    if (navHolder) navHolder.classList.add('ready');
-
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in');
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: .18, rootMargin: '0px 0px -60px 0px' });
-    
-    const reveals = container.current.querySelectorAll('.reveal');
-    reveals.forEach(el => io.observe(el));
-
-    const secs = ['services', 'process', 'about', 'contact'].map(id => document.getElementById(id)).filter(Boolean);
-    const navLinks = container.current.querySelectorAll('.nav-links a');
-    const nio = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          const id = e.target.id;
-          navLinks.forEach(a => {
-            const href = a.getAttribute('href');
-            if (href && href.includes(id)) {
-                a.classList.add('active');
-            } else {
-                a.classList.remove('active');
-            }
-          });
-        }
-      });
-    }, { threshold: .4 });
-    secs.forEach(s => nio.observe(s));
-
-    return () => {
-      io.disconnect();
-      nio.disconnect();
-    };
-  }, []);
+  const [declined, setDeclined] = useState(false);
+  useReveal([declined]);
 
   return (
-    <div ref={container} id="top">
+    <div className="sv-root">
       <Navbar />
 
-      <header className="hero">
-        <div className="hero-image">
-          <div className="hero-img-placeholder" aria-label="Isometric cityscape illustration"></div>
-          <div className="hero-text">
-            <div className="hero-text-inner">
-              <div className="hero-inner">
-                <h1>A lab, not a <span className="factory">factory</span> .</h1>
-                <div className="hero-line"></div>
-                <p className="hero-body">
-                  A factory takes a specification and returns a build.<br /><br />
-                  A lab takes a question and returns something that did not exist before, along with an honest account of what it cost to find out.<br /><br />
-                  <span className="claim">ADNC is built as a lab.</span><br /><br />
-                  Research first, engineering second, operations for as long as you need us.
-                </p>
-              </div>
-            </div>
-          </div>
+      {/* -------------------------------- HERO -------------------------------- */}
+      <header className="sv-hero">
+        <div className="sv-hero-media">
+          <img src={heroBg} alt="ADNC engineering and research lab" />
+        </div>
+
+        <div className="sv-hero-copy reveal">
+          <h1>
+            A lab, not a <em className="u-outline">factory</em>.
+          </h1>
+          <p>
+            A factory takes a specification and returns a build.
+            <br />
+            A lab takes a question and returns something that did not exist before, along with an
+            honest account of what it cost to find out.
+          </p>
+          <p className="sv-hero-claim">ADNC is built as a lab.</p>
+          <p>Research first, engineering second, operations for as long as you need us.</p>
         </div>
       </header>
 
-      {/* ============ TERMINALS ============ */}
-      <section id="process">
-        <div className="wrap">
-          <div className="terminals reveal" id="terminals">
-            <div className="term term-input">
-              <div className="term-head"># INPUT: Research & Innovation</div>
-              <ul className="term-list">
-                <li style={{ '--i': 0 }}>[01]: Idea excavation & concept framing</li>
-                <li style={{ '--i': 1 }}>[02]: Applied research & technical spikes</li>
-                <li style={{ '--i': 2 }}>[03]: AI / ML experimentation</li>
-                <li style={{ '--i': 3 }}>[04]: Algorithm & system design</li>
-                <li style={{ '--i': 4 }}>[05]: Rapid prototyping</li>
-              </ul>
-              <button className="term-btn">Run <span>↲</span></button>
-            </div>
-            <div className="term term-output">
-              <div className="term-head"># OUTPUT: Engineering & Production</div>
-              <ul className="term-list">
-                <li style={{ '--i': 0 }}>[01]: Complex web platforms (React, Next, TanStack)</li>
-                <li style={{ '--i': 1 }}>[02]: Native iOS (Swift, SwiftUI) & Android (Kotlin, Compose)</li>
-                <li style={{ '--i': 2 }}>[03]: Distributed & real-time backends</li>
-                <li style={{ '--i': 3 }}>[04]: Deployment, scaling & observability</li>
-                <li style={{ '--i': 4 }}>[05]: Security, incident response & on-call</li>
-              </ul>
-              <button className="term-btn"><span>↲</span> Source</button>
-            </div>
-          </div>
+      {/* ------------------------------ TERMINALS ----------------------------- */}
+      <section className="sv-terminals reveal">
+        <div className="sv-term sv-term--in">
+          <h2># INPUT: Research &amp; Innovation</h2>
+          <ul>
+            {INPUT_LINES.map((l, i) => (
+              <li key={l} style={{ '--i': i }}>{l}</li>
+            ))}
+          </ul>
+          <button type="button" className="sv-term-btn">
+            Run
+            <svg viewBox="0 0 28 28" width="26" height="26" aria-hidden="true">
+              <path d="M4 14h18M15 7l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="sv-term sv-term--out">
+          <h2># OUTPUT: Engineering &amp; Production</h2>
+          <ul>
+            {OUTPUT_LINES.map((l, i) => (
+              <li key={l} style={{ '--i': i }}>{l}</li>
+            ))}
+          </ul>
+          <button type="button" className="sv-term-btn sv-term-btn--sm">
+            <svg viewBox="0 0 28 28" width="18" height="18" aria-hidden="true">
+              <path d="M24 14H6M13 7l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Source
+          </button>
         </div>
       </section>
 
-      {/* ============ WHAT WE TAKE ON ============ */}
-      <section>
-        <div className="wrap">
-          <div className="take-on reveal" id="takeOn">
-            <div className="take-panel">
-              <span className="take-watermark">[PASS]</span>
-              <h3># What we take on</h3>
+      {/* --------------------------- WHAT WE TAKE ON -------------------------- */}
+      <section className="sv-take reveal">
+        {/* Figma keeps the decline panel parked off to the right at opacity 0 —
+            switching tabs slides the whole track across. */}
+        <div className="sv-take-panel">
+          <div className="sv-take-track" style={{ transform: `translateX(${declined ? '-50%' : '0%'})` }}>
+            <div className={`sv-take-view${declined ? '' : ' is-active'}`}>
+              <span className="sv-take-mark u-outline" aria-hidden="true">[PASS]</span>
+              <h2># What we take on</h2>
               <ul>
-                <li>[PASS]: Systems with no precedent.</li>
-                <li>[PASS]: Constraints the market has decided are unreachable.</li>
-                <li>[PASS]: Problems sitting between two fields that nobody has connected.</li>
-                <li>[PASS]: Projects other teams have already declared unsalvageable.</li>
+                {PASS_LINES.map((l, i) => <li key={l} style={{ '--i': i }}>{l}</li>)}
               </ul>
             </div>
-            <div className="rejected-tab" title="What we don't take on"><span>[REJECTED]</span></div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============ SERVICE GRID ============ */}
-      <section id="services">
-        <div className="wrap">
-          <div className="service-grid reveal" id="serviceGrid">
-            <div className="service-cell">
-              <span className="idx">01</span>
-              <h4>Feasibility<br />engagement</h4>
-              <p>A short, paid sprint to find out whether the idea survives contact with reality — before you commit the budget.</p>
-            </div>
-            <div className="service-cell">
-              <span className="idx">02</span>
-              <h4>Build<br />with us</h4>
-              <p>You hold the vision. We bring the senior team and take it to production.</p>
-            </div>
-            <div className="service-cell">
-              <span className="idx">03</span>
-              <h4>Build and<br />operate</h4>
-              <p>We design it, build it and run it. One team, one accountability, no handover.</p>
-            </div>
-            <div className="service-cell">
-              <span className="idx">04</span>
-              <h4>Recover and<br />rebuild</h4>
-              <p>A stalled or broken project, inherited without judgment, stabilized, and shipped.</p>
+            <div className={`sv-take-view${declined ? ' is-active' : ''}`}>
+              <span className="sv-take-mark u-outline" aria-hidden="true">[REJECTED]</span>
+              <h2># What we decline</h2>
+              <ul>
+                {REJECT_LINES.map((l, i) => <li key={l} style={{ '--i': i }}>{l}</li>)}
+              </ul>
             </div>
           </div>
         </div>
+
+        <button
+          type="button"
+          className="sv-take-tab"
+          onClick={() => setDeclined((v) => !v)}
+          aria-label={declined ? 'Show what we take on' : 'Show what we decline'}
+        >
+          <span className="u-outline-dark">{declined ? '[PASS]' : '[REJECTED]'}</span>
+        </button>
       </section>
 
-      {/* ============ CTA ============ */}
-      <section style={{ paddingTop: 0 }}>
-        <div className="wrap">
-          <a href="#contact" className="cta-link reveal" id="ctaLink" onClick={(e) => handleScrollTo(e, 'contact')}>
-            <span className="arrow l">→</span>
-            <span>Discuss your project</span>
-            <span className="arrow r">→</span>
-          </a>
-        </div>
+      {/* ------------------------------ OFFER GRID ---------------------------- */}
+      <section className="sv-grid reveal">
+        {OFFERS.map(({ title, body }) => (
+          <article className="sv-cell" key={title}>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
       </section>
+
+      {/* --------------------------------- CTA -------------------------------- */}
+      <div className="sv-cta-wrap reveal">
+        <Link to="/contact" className="sv-cta">
+          <span className="sv-cta-arrow sv-cta-arrow--l" aria-hidden="true">→</span>
+          <span>Discuss your project</span>
+          <span className="sv-cta-arrow sv-cta-arrow--r" aria-hidden="true">→</span>
+        </Link>
+      </div>
 
       <Footer />
     </div>
   );
 };
 
-// Consulting Version (New)
+/* ================================================================
+   PAGE 2 — PRACTICE / SERVICES (mode Consulting) — Figma 22:3548
+   ================================================================ */
+
+const PRACTICE_LEFT = [
+  'Data audit & instrumentation',
+  'Forecasting & predictive modelling',
+  'Decision structuring & scenario modelling',
+  'Risk quantification & sensitivity analysis',
+  'KPI frameworks & executive reporting',
+];
+
+const PRACTICE_RIGHT = [
+  'Digital strategy & transformation roadmaps',
+  'Independent technology & architecture audit',
+  'Cloud & infrastructure planning',
+  'Business plans & financial modelling',
+  'Investment appraisal & operational audits',
+];
+
+const ENGAGEMENTS = [
+  {
+    title: 'Single decision assessment',
+    body: 'A fixed scope engagement on one defined decision, ending in a written recommendation to the sponsoring body.',
+    rotate: -2.84,
+    pin: 'left',
+  },
+  {
+    title: 'Advisory and delivery',
+    body: 'Where implementation follows, the organisation that gave the advice stays accountable for delivering it.',
+    rotate: 1.87,
+    pin: 'center',
+  },
+  {
+    title: 'Advisory retainer',
+    body: 'Continuous access to the practice for organisations working through a sequence of related decisions.',
+    rotate: 6.51,
+    pin: 'right',
+  },
+];
+
 const ConsultingServices = () => {
-  const { mode } = useMode();
-  const [activeEquation, setActiveEquation] = useState(1);
-
-  const equations = [
-    {
-      left: 'text text text',
-      middle: 'Gut Feeling / Intuition',
-      right: 'text text text',
-      ghost: true
-    },
-    {
-      left: 'Variable Sector',
-      middle: 'Fixed Data Methodology',
-      right: 'Proven Decision',
-      ghost: false
-    },
-    {
-      left: 'text text text',
-      middle: 'Market Hype',
-      right: 'text text tex',
-      ghost: true
-    }
-  ];
-
-  const cycleEquation = (direction) => {
-    const total = equations.length;
-    const next = (activeEquation + direction + total) % total;
-    setActiveEquation(next);
-  };
+  useReveal([]);
 
   return (
-    <div className="consulting-services-page">
-      <ConsultingNavbar />
-      <ConsultingTabSwitcher />
+    <div className="cs-root sv-c-root">
+      <Navbar />
 
-      {/* HERO */}
-      <section className="hero">
-        <h1><span className="ghost">Any</span> sector.<br />The <span className="ghost">same</span> discipline.</h1>
-        <p>A public authority weighing a modernisation programme and a restaurant group weighing a fourth site are facing the same problem in different clothing. An irreversible commitment, made on incomplete information, with competing opinions inside the organisation. Decision science exists for exactly this. We bring it to organisations that have rarely had access to it.</p>
-      </section>
+      <main>
+        <section className="sv-c-hero">
+          <h1 className="reveal">
+            <span className="u-outline-dark">Any</span> sector.
+            <br />
+            The <span className="u-outline-dark">same</span> discipline.
+          </h1>
+          <p className="reveal">
+            A public authority weighing a modernisation programme and a restaurant group weighing a
+            fourth site are facing the same problem in different clothing. An irreversible
+            commitment, made on incomplete information, with competing opinions inside the
+            organisation. Decision science exists for exactly this. We bring it to organisations that
+            have rarely had access to it.
+          </p>
+        </section>
 
-      {/* EQUATION PICKER */}
-      <div className="equation-wrap">
-        <div className="equation">
-          <div className="eq-rows">
-            {equations.map((eq, index) => (
-              <div 
-                key={index} 
-                className={`eq-row ${index === activeEquation ? 'active' : 'ghost'}`}
-              >
-                {eq.ghost ? (
-                  <>
-                    <span className="eq-slot">{eq.left}</span>
-                    <span className="eq-slot mid">{eq.middle}</span>
-                    <span className="eq-slot">{eq.right}</span>
-                  </>
-                ) : (
-                  <>
-                    <div className="eq-tag">{eq.left}</div>
-                    <span className="eq-op">&times;</span>
-                    <div className="eq-tag" style={{ fontSize: '26px' }}>{eq.middle}</div>
-                    <span className="eq-op">=</span>
-                    <div className="eq-tag black">
-                      <svg viewBox="0 0 22 18" fill="none">
-                        <path d="M1 9l7 7L21 1" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      {eq.right}
-                    </div>
-                  </>
-                )}
-              </div>
-            ))}
+        {/* ------------------------- THE EQUATION ------------------------- */}
+        <section className="sv-c-eq reveal" aria-label="Our method at a glance">
+          <img src={eqBar} alt="" className="sv-c-eq-fade sv-c-eq-fade--top" aria-hidden="true" />
+
+          <div className="sv-c-eq-row sv-c-eq-row--ghost" aria-hidden="true">
+            <span>text text text</span>
+            <span />
+            <span>Gut Feeling / Intuition</span>
+            <span />
+            <span>text text text</span>
           </div>
-          <div className="eq-control">
-            <span className="ball"></span>
-            <button className="chev" onClick={() => cycleEquation(-1)} aria-label="Previous">
-              <svg viewBox="0 0 12 12" fill="none">
-                <path d="M2 8l4-4 4 4" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <button className="chev" onClick={() => cycleEquation(1)} aria-label="Next">
-              <svg viewBox="0 0 12 12" fill="none">
-                <path d="M2 4l4 4 4-4" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <span className="ball"></span>
-          </div>
-        </div>
-      </div>
 
-      {/* PRACTICE AREAS */}
-      <section className="areas">
-        <div className="area">
-          <h2>Data <b>&amp;</b> Decision Sciences</h2>
-          <ul>
-            <li>-&nbsp; Data audit &amp; instrumentation</li>
-            <li>-&nbsp; Forecasting &amp; predictive modelling</li>
-            <li>-&nbsp; Decision structuring &amp; scenario modelling</li>
-            <li>-&nbsp; Risk quantification &amp; sensitivity analysis</li>
-            <li>-&nbsp; KPI frameworks &amp; executive reporting</li>
-          </ul>
-        </div>
-        <div className="area">
-          <h2>Strategy, Technology <b>&amp;</b> Finance</h2>
-          <ul>
-            <li>-&nbsp; Digital strategy &amp; transformation roadmaps</li>
-            <li>-&nbsp; Independent technology &amp; architecture audit</li>
-            <li>-&nbsp; Cloud &amp; infrastructure planning</li>
-            <li>-&nbsp; Business plans &amp; financial modelling</li>
-            <li>-&nbsp; Investment appraisal &amp; operational audits</li>
-          </ul>
-        </div>
-      </section>
-
-      {/* CARDS */}
-      <section className="cards">
-        <div className="card">
-          <div className="pin">
-            <svg viewBox="0 0 26 26">
-              <circle cx="9" cy="9" r="8" fill="#555"/>
-              <circle cx="15" cy="15" r="8" fill="#222"/>
-            </svg>
+          <div className="sv-c-eq-band">
+            <div className="sv-c-eq-row sv-c-eq-row--main">
+              <span className="sv-c-eq-box">Variable Sector</span>
+              <span className="sv-c-eq-op">×</span>
+              <span className="sv-c-eq-plain">Fixed Data Methodology</span>
+              <span className="sv-c-eq-op">=</span>
+              <span className="sv-c-eq-box sv-c-eq-box--proven">
+                <svg viewBox="0 0 23 18" width="22" height="17" aria-hidden="true">
+                  <path d="M7.26 17.84L0 10.58L3.16 7.58L7.26 11.69L18.95 0L22.11 3.16L7.26 17.84Z" fill="currentColor" />
+                </svg>
+                Proven Decision
+              </span>
+            </div>
           </div>
-          <h3>Single decision assessment</h3>
-          <p>A fixed scope engagement on one defined decision, ending in a written recommendation to the sponsoring body.</p>
-        </div>
-        <div className="card">
-          <div className="pin">
-            <svg viewBox="0 0 26 26">
-              <circle cx="9" cy="9" r="8" fill="#555"/>
-              <circle cx="15" cy="15" r="8" fill="#222"/>
-            </svg>
-          </div>
-          <h3>Advisory and delivery</h3>
-          <p>Where implementation follows, the organisation that gave the advice stays accountable for delivering it.</p>
-        </div>
-        <div className="card">
-          <div className="pin">
-            <svg viewBox="0 0 26 26">
-              <circle cx="9" cy="9" r="8" fill="#555"/>
-              <circle cx="15" cy="15" r="8" fill="#222"/>
-            </svg>
-          </div>
-          <h3>Advisory retainer</h3>
-          <p>Continuous access to the practice for organisations working through a sequence of related decisions.</p>
-        </div>
-      </section>
 
-      {/* CTA */}
-      <div className="cta">
-        <button className="cta-btn">
-          Discuss your situation
-          <svg viewBox="0 0 15 17" fill="none">
-            <path d="M1 1l13 7.5L1 16" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-      </div>
+          <div className="sv-c-eq-row sv-c-eq-row--ghost" aria-hidden="true">
+            <span>text text text</span>
+            <span />
+            <span>Market Hype</span>
+            <span />
+            <span>text text tex</span>
+          </div>
 
-      {/* FOOTER */}
+          <img src={eqBar} alt="" className="sv-c-eq-fade sv-c-eq-fade--bottom" aria-hidden="true" />
+
+          <span className="sv-c-eq-hint" aria-hidden="true">
+            <img src={icons3d} alt="" className="sv-c-eq-ball" />
+            <svg viewBox="0 0 40 24" width="26" height="16"><path d="M3 4L20 20L36 3" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg>
+            <svg viewBox="0 0 40 24" width="26" height="16"><path d="M3 4L20 20L36 3" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg>
+            <span className="sv-c-eq-stem" />
+            <img src={icons3d} alt="" className="sv-c-eq-ball sv-c-eq-ball--sm" />
+          </span>
+        </section>
+
+        {/* ------------------------ PRACTICE AREAS ------------------------ */}
+        <section className="sv-c-practice">
+          <div className="sv-c-col reveal-left">
+            <h2>Data <span className="u-outline-dark">&amp;</span> Decision Sciences</h2>
+            <ul>
+              {PRACTICE_LEFT.map((item) => <li key={item}>-&nbsp; {item}</li>)}
+            </ul>
+          </div>
+
+          <span className="sv-c-divider" aria-hidden="true" />
+
+          <div className="sv-c-col reveal-right">
+            <h2>Strategy, Technology <span className="u-outline-dark">&amp;</span> Finance</h2>
+            <ul>
+              {PRACTICE_RIGHT.map((item) => <li key={item}>-&nbsp; {item}</li>)}
+            </ul>
+          </div>
+        </section>
+
+        {/* ------------------------- ENGAGEMENTS -------------------------- */}
+        <section className="sv-c-cards">
+          {ENGAGEMENTS.map(({ title, body, rotate, pin: pinPos }, i) => (
+            <article
+              className="sv-c-card reveal"
+              key={title}
+              style={{ '--rot': `${rotate}deg`, transitionDelay: `${i * 0.1}s` }}
+            >
+              <img src={pin} alt="" className={`sv-c-pin sv-c-pin--${pinPos}`} aria-hidden="true" />
+              <h3 className="u-outline-dark">{title}</h3>
+              <p>{body}</p>
+            </article>
+          ))}
+        </section>
+
+        <div className="sv-c-cta reveal">
+          <Link to="/contact" className="btn-square sv-c-cta-btn">
+            Discuss your situation <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+      </main>
+
       <ConsultingFooter />
     </div>
   );
 };
 
-// Main Services Component
 const Services = () => {
   const { mode } = useMode();
-
-  // Render different version based on mode
-  if (mode === 'consulting') {
-    return <ConsultingServices />;
-  }
-  
-  return <DevelopmentServices />;
+  return mode === 'consulting' ? <ConsultingServices /> : <DevelopmentServices />;
 };
 
 export default Services;

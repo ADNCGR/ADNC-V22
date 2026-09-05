@@ -1,202 +1,217 @@
+/* ------------------------------------------------------------------
+   Global header — nav pill + mode switch
+   Figma: nav 1261x77, 2px border, 27px radius, 19/24 padding,
+          logo 185x39, links Fustat Bold 20px with a 90px gutter,
+          mode switch 324x56 pinned to the top once the nav scrolls off.
+   ------------------------------------------------------------------ */
+
 .global-header {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 1000;
   width: 100%;
-  padding-top: 24px;
-  background: transparent;
+  padding-top: 20px;
   pointer-events: none;
-}
-
-.consulting-frame .global-nav-pill {
-  border: 1.5px solid #000000;
-  background: rgba(255, 255, 255, 0.85);
-}
-
-.consulting-frame .global-logo {
-  color: #000000;
-}
-
-.consulting-frame .global-logo-mark circle {
-  fill: #000000;
-}
-
-.consulting-frame .global-logo-mark path:nth-child(2) {
-  fill: #ffffff;
-}
-
-.consulting-frame .global-logo-mark path:nth-child(3) {
-  fill: #000000;
-}
-
-.consulting-frame .global-logo-text {
-  color: #000000;
-}
-
-.consulting-frame .global-logo-text .grp {
-  color: rgba(0, 0, 0, 0.65);
-}
-
-.consulting-frame .global-nav-links a {
-  color: #000000;
-}
-
-.consulting-frame .global-nav-links a.active {
-  text-decoration-color: #000000;
-}
-
-.consulting-frame .global-toggle-pill {
-  background: #e4e4e4;
-}
-
-.consulting-frame .global-toggle-pill button {
-  color: #454747;
-}
-
-.consulting-frame .global-toggle-pill button.active {
-  background: #000000;
-  color: #ffffff;
 }
 
 .global-nav-outer {
   display: flex;
   justify-content: center;
-  padding: 0 clamp(20px, 4vw, 60px);
+  padding: 0 var(--page-pad);
   pointer-events: auto;
 }
 
 .global-nav-pill {
   width: 100%;
-  max-width: 1100px;
-  height: 64px;
-  border: 1.5px solid #ffffff;
-  border-radius: 999px;
-  padding: 0 36px;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  max-width: 1261px;
+  margin: 0 auto;
+  border: 2px solid #ffffff;
+  border-radius: 27px;
+  padding: 19px 24px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  margin: 0 auto;
+  gap: clamp(24px, 8.5vw, 123px);
 }
 
 .global-logo {
-  position: absolute;
-  left: 36px;
-  top: 50%;
-  transform: translateY(-50%);
   display: flex;
   align-items: center;
-  gap: 10px;
+  flex-shrink: 0;
   text-decoration: none;
   color: #ffffff;
 }
 
-.global-logo-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.global-logo-img {
+  height: clamp(26px, 2.71vw, 39px);
+  width: auto;
+  display: block;
+  object-fit: contain;
+  transition: opacity 0.25s var(--ease);
 }
 
-.global-logo-text {
-  font-family: 'Fustat', 'Inter', -apple-system, sans-serif;
-  font-weight: 700;
-  font-size: 20px;
-  letter-spacing: -0.2px;
-  color: #ffffff;
-}
-
-.global-logo-text .grp {
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.65);
-  margin-left: 2px;
-}
+.global-logo:hover .global-logo-img { opacity: 0.78; }
 
 .global-nav-links {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 48px;
-  margin: 0 auto;
+  gap: clamp(20px, 6.25vw, 90px);
 }
 
 .global-nav-links a {
-  font-family: 'Fustat', 'Inter', -apple-system, sans-serif;
-  font-size: 16px;
-  font-weight: 500;
+  font-family: var(--fustat);
+  font-size: clamp(14px, 1.39vw, 20px);
+  font-weight: 700;
   color: #ffffff;
   text-decoration: none;
   position: relative;
-  padding: 4px 0;
-  transition: opacity 0.2s ease, font-weight 0.2s ease;
+  padding: 2px 0;
+  white-space: nowrap;
+  transition: opacity 0.2s var(--ease);
 }
 
-.global-nav-links a:hover {
-  opacity: 0.85;
+/* underline grows out of the centre on hover, stays put when active */
+.global-nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.35s var(--ease);
 }
 
-.global-nav-links a.active {
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 8px;
-  text-decoration-thickness: 2px;
-  text-decoration-color: #ffffff;
+.global-nav-links a:hover::after { transform: scaleX(1); }
+.global-nav-links a.active::after { transform: scaleX(1); }
+
+/* ---------------- mode switch ---------------- */
+
+.global-toggle-sentinel {
+  height: 1px;
+  margin-top: 29px;
 }
 
 .global-toggle-outer {
   display: flex;
   justify-content: center;
-  margin-top: 18px;
+  margin-top: -1px;
   pointer-events: auto;
 }
 
+.global-toggle-outer.is-pinned {
+  position: fixed;
+  top: 14px;
+  left: 0;
+  right: 0;
+  margin-top: 0;
+  z-index: 1200;
+  animation: nav-toggle-drop 0.4s var(--ease);
+}
+
+@keyframes nav-toggle-drop {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .global-toggle-pill {
-  display: inline-flex;
-  align-items: center;
+  position: relative;
+  width: 324px;
+  height: 56px;
+  border-radius: 63px;
   background: #ffffff;
-  border-radius: 999px;
-  padding: 4px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+}
+
+.global-toggle-thumb {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 157px;
+  height: 45px;
+  border-radius: 73px;
+  background: #000000;
+  transition: transform 0.42s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.global-toggle-pill[data-mode='consulting'] .global-toggle-thumb {
+  transform: translateX(155px);
 }
 
 .global-toggle-pill button {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  height: 45px;
   border: none;
   background: transparent;
-  color: #454747;
-  font-family: 'Fustat', 'Inter', -apple-system, sans-serif;
+  border-radius: 73px;
+  font-family: var(--inter);
   font-weight: 600;
-  font-size: 14px;
-  padding: 10px 26px;
-  border-radius: 999px;
+  font-size: 16px;
+  line-height: 24px;
+  color: #454747;
   cursor: pointer;
-  transition: background 0.25s ease, color 0.25s ease;
+  transition: color 0.3s var(--ease);
 }
 
-.global-toggle-pill button.active {
-  background: #000000;
-  color: #ffffff;
+.global-toggle-pill button.active { color: #ffffff; }
+
+/* ---------------- consulting (light) skin ---------------- */
+
+.consulting-frame .global-nav-pill {
+  border-color: #000000;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.consulting-frame .global-nav-links a { color: #000000; }
+
+.consulting-frame .global-toggle-pill {
+  background: #e4e4e4;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
 }
 
 @media (max-width: 900px) {
   .global-nav-pill {
-    padding: 0 20px;
-    height: 60px;
+    padding: 14px 18px;
+    border-radius: 22px;
     justify-content: space-between;
+    gap: 16px;
   }
-  .global-logo {
-    position: static;
-    transform: none;
+  .global-nav-links { gap: 16px; }
+  .global-toggle-pill { width: 268px; height: 48px; }
+  .global-toggle-thumb { width: 128px; height: 38px; }
+  .global-toggle-pill[data-mode='consulting'] .global-toggle-thumb {
+    transform: translateX(128px);
   }
-  .global-nav-links {
-    margin: 0;
-    gap: 20px;
+  .global-toggle-pill button { height: 38px; font-size: 14px; }
+}
+
+/* Below ~680px the four links no longer fit next to the wordmark, so the
+   pill stacks instead of clipping "Contact". */
+@media (max-width: 680px) {
+  .global-nav-pill {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
   }
-  .global-nav-links a {
-    font-size: 14px;
-  }
-  .global-logo-text {
-    font-size: 17px;
+  .global-nav-links { gap: 18px; }
+  .global-nav-links a { font-size: 13px; }
+}
+
+@media (max-width: 380px) {
+  .global-nav-links { gap: 12px; }
+  .global-nav-links a { font-size: 12px; }
+  .global-toggle-pill { width: 240px; }
+  .global-toggle-thumb { width: 114px; }
+  .global-toggle-pill[data-mode='consulting'] .global-toggle-thumb {
+    transform: translateX(114px);
   }
 }

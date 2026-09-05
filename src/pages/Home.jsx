@@ -1,296 +1,356 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ConsultingHome from './ConsultingHome';
 import { useMode } from '../context/ModeContext';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
+import { useReveal, useScrollProgress } from '../hooks/useScrollFx';
+
+import building from '../assets/figma/building.png';
+import lignePath from '../assets/figma/ligne-animation.svg';
+import stagePath from '../assets/figma/stage-path.svg';
+import iconSearch from '../assets/figma/icon-search-status.svg';
+import iconMobile from '../assets/figma/icon-mobile.svg';
+import iconTick from '../assets/figma/icon-tick-circle.svg';
+import iconSetting from '../assets/figma/icon-setting.svg';
+import iconDocCode from '../assets/figma/icon-document-code.svg';
+import iconCode from '../assets/figma/icon-code.svg';
+import iconClipboard from '../assets/figma/icon-clipboard-tick.svg';
+
 import './Home.css';
 
-gsap.registerPlugin(ScrollTrigger);
+/* Exact cube coordinates from the Figma "cubs" frame (592 x 569, 51.61px tiles) */
+const CUBES = [
+  [130.32, 74.83], [130.32, 233.54], [181.93, 339.34], [78.71, 365.14],
+  [304.5, 100.64], [336.76, 178.05], [356.11, 339.34], [349.66, 429.65],
+  [207.73, 152.25], [263.21, 246.44], [272.24, 332.88], [207.73, 416.75],
+  [414.17, 74.83], [454.17, 207.73], [388.37, 250.31], [446.43, 378.04],
+];
+
+/* Glass capsules floating around the HQ photo — insets copied from Figma */
+const CAPSULES = [
+  { label: 'We research', icon: iconSearch, style: { top: '14.46%', left: '4.07%' } },
+  { label: 'We prototype', icon: iconMobile, style: { top: '19.33%', left: '57.32%' } },
+  { label: 'We prove it', icon: iconTick, style: { top: '36.39%', left: '0%' } },
+  { label: 'We operate', icon: iconSetting, style: { top: '41.27%', left: '70.22%' } },
+  { label: 'We engineer', icon: iconDocCode, style: { top: '58.16%', left: '7.01%' } },
+  { label: 'We deploy', icon: iconCode, style: { top: '63.36%', left: '66.16%' } },
+  { label: 'We stay accountable', icon: iconClipboard, style: { top: '87.73%', left: '24.9%' } },
+];
+
+const KEYWORDS = [
+  '✦ Applied research', '✦ Feasibility', '✦ Prototyping', '✦ Product design',
+  '✦ Native mobile', '✦ Real-time', '✦ Applied AI', '✦ Production & scale',
+];
+
+const ACCORDIONS = [
+  {
+    num: '01',
+    title: 'Research & feasibility',
+    body: 'Before anyone commits a budget, we establish whether the difficult part is possible and what it costs to get there. Technical spikes, applied AI experimentation, algorithm design, a working prototype inside a few weeks. The phase ends with a written report: what we proved, what we could not, and what we would advise against attempting at all. Some engagements stop here, on our recommendation.',
+  },
+  {
+    num: '02',
+    title: 'Engineering & operations',
+    body: 'Then we build the real thing and keep it standing. Complex web platforms, native mobile, distributed and real-time backends, deployment, scaling and observability. The engineers who designed the system run it in production, take the on-call rotation, and stay accountable for as long as you need us there.',
+  },
+];
+
+const STEPS = [
+  {
+    n: '1',
+    title: 'Frame',
+    rotate: -4,
+    lines: [
+      'We establish what is actually being asked, which constraints are real and which are only assumed, and what success would look like when it arrives.',
+      'Before you commit anything you receive a written scope, a named senior team and a cost envelope.',
+    ],
+  },
+  {
+    n: '2',
+    title: 'Prove',
+    rotate: -13,
+    lines: [
+      'The step most providers skip. We go after the hardest unknown first, quickly and cheaply, and we report the result honestly whichever way it goes.',
+      'Finding out that something cannot be done costs weeks now. It costs years later.',
+    ],
+  },
+  {
+    n: '3',
+    title: 'Build',
+    rotate: 0,
+    lines: [
+      'Design and engineering run as one loop.',
+      'Working software in a real environment, every week.',
+      'Progress gets demonstrated rather than reported.',
+    ],
+  },
+  {
+    n: '4',
+    title: 'Operate',
+    rotate: -13,
+    lines: [
+      'Deployment, scaling, monitoring, incident response.',
+      'Launch is where the engagement starts, not where it ends.',
+    ],
+  },
+];
+
+const MAKE_IT_REAL = [
+  'Web platforms, native iOS & Android',
+  'Observability, incident response & on-call',
+  'Distributed & real-time backends',
+  'Documented handover, or none if we stay',
+  'Production infrastructure & CI/CD',
+];
+
+const INVENT = [
+  'Concept framing & feasibility analysis',
+  'Rapid prototyping in days',
+  'Applied research & technical spikes',
+  'Written feasibility report & cost envelope',
+  'Algorithm and system design',
+];
 
 const Home = () => {
   const { mode } = useMode();
-  const container = useRef();
-  const [activeTab, setActiveTab] = useState(0);
+  const isConsulting = mode === 'consulting';
 
-  const handleScrollTo = (e, id) => {
-    e.preventDefault();
-    const t = document.getElementById(id);
-    if (t) {
-      window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 90, behavior: 'smooth' });
-    }
-  };
+  useReveal([mode]);
+  useScrollProgress([mode]);
 
-  useGSAP(() => {
-    if (mode === 'consulting') return;
-    gsap.set('.hero-title .line span', { y: '110%' });
-    gsap.set('.hero-squares', { opacity: 0 });
-    gsap.set('.hero-squares span', { scale: 0 });
-    gsap.set('#heroDesc', { opacity: 0 });
-    gsap.set('#heroCtas', { opacity: 0 });
-    gsap.set('.cap', { opacity: 0, scale: .7 });
-
-    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
-    tl.to('.hero-title .line span', { y: '0%', duration: 1.1, stagger: .12 })
-      .to('.hero-squares', { opacity: 1, duration: .3 }, '-=.6')
-      .to('.hero-squares span', { scale: 1, duration: .5, stagger: { amount: .6, from: 'random' }, ease: 'back.out(2)' }, '<')
-      .to('#heroDesc', { opacity: 1, duration: .9 }, '-=.5')
-      .to('#heroCtas', { opacity: 1, duration: .9 }, '-=.7');
-
-    const rotWords = ['scale.', 'deploy.', 'engineer.'];
-    let ri = 0;
-    const cycleWord = () => {
-      const rotEl = document.getElementById('rotator');
-      if (!rotEl) return;
-      gsap.to(rotEl, {
-        duration: .5, ease: 'power3.in', y: -24, opacity: 0, onComplete: () => {
-          ri = (ri + 1) % rotWords.length;
-          rotEl.textContent = rotWords[ri];
-          gsap.fromTo(rotEl, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: .6, ease: 'power3.out' });
-        }
-      });
-    };
-    const interval = setInterval(cycleWord, 2600);
-
-    const onScroll = () => {
-      const pill = document.getElementById('navPill');
-      if (pill) {
-        if (window.scrollY > 40) pill.classList.add('scrolled');
-        else pill.classList.remove('scrolled');
-      }
-    };
-    window.addEventListener('scroll', onScroll);
-
-    gsap.utils.toArray('.cap').forEach((cap, i) => {
-      ScrollTrigger.create({
-        trigger: '.partner-stage', start: 'top 75%',
-        onEnter: () => gsap.to(cap, { opacity: 1, scale: 1, duration: .8, delay: i * .08, ease: 'back.out(1.7)' })
-      });
-    });
-    
-    ScrollTrigger.create({
-      trigger: '.partner-stage', start: 'top 75%',
-      onEnter: () => gsap.from('.partner-img', { opacity: 0, scale: .85, duration: 1, ease: 'power3.out' })
-    });
-
-    ScrollTrigger.create({
-      trigger: '#stackInner', start: 'top 70%',
-      onEnter: () => {
-        const el = document.getElementById('stackInner');
-        if (el) el.classList.add('reveal');
-      }
-    });
-
-    gsap.utils.toArray('.svc-row').forEach(row => {
-      gsap.from(row, { opacity: 0, y: 26, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: row, start: 'top 88%' } });
-    });
-
-    ScrollTrigger.create({
-      trigger: '#stepsFan', start: 'top 75%',
-      onEnter: () => {
-        const el = document.getElementById('stepsFan');
-        if (el) el.classList.add('spread');
-      }
-    });
-
-    gsap.from('.process-head', { opacity: 0, y: 20, duration: 1, scrollTrigger: { trigger: '.process-head', start: 'top 85%' } });
-    gsap.from('.consult-card', { opacity: 0, y: 20, duration: 1, scrollTrigger: { trigger: '.consult-card', start: 'top 90%' } });
-    gsap.from('.final-cta h2, .final-cta p, .final-cta a', { opacity: 0, y: 24, stagger: .1, duration: .9, scrollTrigger: { trigger: '.final-cta', start: 'top 80%' } });
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, { scope: container });
-
-  const sqPositions = [
-    { x: 70, y: 30 }, { x: 180, y: 70 }, { x: 290, y: 30 },
-    { x: 120, y: 135 }, { x: 235, y: 135 },
-    { x: 70, y: 200 }, { x: 180, y: 210 }, { x: 280, y: 205 }, { x: 345, y: 180 },
-    { x: 125, y: 280 }, { x: 235, y: 280 }, { x: 300, y: 285 },
-    { x: 35, y: 300 }, { x: 140, y: 340 }, { x: 250, y: 350 }, { x: 345, y: 320 }
-  ];
-
-  const words = Array(10).fill('ADNC');
-  const kws = ['✦ Applied research', '✦ Feasibility', '✦ Prototyping', '✦ Product design', '✦ Native mobile', '✦ Real-time', '✦ Applied AI', '✦ Production & scale'];
-
-  if (mode === 'consulting') {
-    return <ConsultingHome />;
-  }
+  if (isConsulting) return <ConsultingHome />;
 
   return (
-    <div ref={container}>
+    <div className="hm-root">
       <Navbar />
 
-      {/* HERO */}
-      <section className="hero">
-        <div className="wrap">
-          <h1 className="hero-title">
-            <span className="line"><span>We build.</span></span>
-            <span className="line"><span>We operate.</span></span>
-            <span className="line"><span>We <span className="rotator-wrap"><span className="rotator" id="rotator">deploy.</span></span></span></span>
+      {/* ============================ HERO ============================ */}
+      <section className="hm-hero">
+        <span className="u-glow hm-hero-glow" aria-hidden="true" />
+
+        <div className="hm-shell">
+          <h1 className="hm-hero-title">
+            <span className="hm-hero-line">We build.</span>
+            <span className="hm-hero-line">We operate.</span>
+            <span className="hm-hero-line">
+              We <em className="u-outline hm-hero-outline">scale.</em>
+            </span>
           </h1>
-          <p className="hero-desc" id="heroDesc">
-            <b>ADNC</b><span className="spacer"></span>
-            is not a software company. We are a research and engineering lab.
-            Clients come to us with the work nobody else would take on: the system that
-            has no precedent, the constraint everyone said was unreachable.
-            We find out whether it can be done, we build it if it can, and then we
-            run it in production for as long as you need us there.
-            Every engagement starts with a written scope and a senior engineer whose
-            name stays on it until the last day.
-          </p>
-          <div className="hero-ctas" id="heroCtas">
-            <a href="#contact" className="btn-pill" onClick={(e) => handleScrollTo(e, 'contact')}>Bring us the hard problem →</a>
-            <a href="#process" className="btn-pill" style={{ background: 'transparent', color: '#fff', border: '0.5px solid #fff' }} onClick={(e) => handleScrollTo(e, 'process')}>
-              <span style={{ display: 'none' }}></span>How we work
-            </a>
+
+          <div className="hm-hero-row">
+            <div className="hm-hero-copy reveal">
+              <p>
+                <strong>ADNC</strong> is not a software company.
+                <br />
+                We are a research and engineering lab. Clients come to us with the work nobody else
+                would take on: the system that has no precedent, the constraint everyone said was
+                unreachable.
+                <br />
+                We find out whether it can be done, we build it if it can, and then we run it in
+                production for as long as you need us there.
+                <br />
+                Every engagement starts with a written scope and a senior engineer whose name stays
+                on it until the last day.
+              </p>
+            </div>
+
+            <div className="hm-cubes" aria-hidden="true">
+              {CUBES.map(([x, y], i) => (
+                <span
+                  key={`${x}-${y}`}
+                  className="hm-cube"
+                  style={{
+                    left: `${(x / 592) * 100}%`,
+                    top: `${(y / 569) * 100}%`,
+                    animationDelay: `${(i % 8) * 0.18}s`,
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="hm-hero-actions reveal">
+            <Link to="/contact" className="btn-pill">Bring us the hard problem →</Link>
+            <Link to="/process" className="btn-pill btn-pill--ghost">How we work</Link>
           </div>
         </div>
-        <div className="hero-squares" id="heroSquares">
-          {sqPositions.map((p, i) => (
-            <span key={i} style={{ left: p.x + 'px', top: p.y + 'px' }}></span>
+      </section>
+
+      {/* ========================= ADNC MARQUEE ======================== */}
+      <div className="hm-marquee hm-marquee--adnc" aria-hidden="true">
+        <div className="hm-marquee-track">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <span key={i}>ADNC</span>
+          ))}
+        </div>
+      </div>
+
+      {/* ======================= HQ + CAPSULES ========================= */}
+      <section className="hm-hq">
+        <div className="hm-hq-stage reveal-scale">
+          <div className="hm-hq-photo">
+            <img src={building} alt="ADNC Group headquarters at night" />
+          </div>
+
+          {CAPSULES.map(({ label, icon, style }, i) => (
+            <div
+              className="hm-capsule"
+              key={label}
+              style={{ ...style, transitionDelay: `${0.12 * i}s` }}
+            >
+              <span className="hm-capsule-icon">
+                <img src={icon} alt="" />
+              </span>
+              <span className="hm-capsule-label">{label}</span>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* MARQUEE 1 */}
-      <div className="marquee-section">
-        <div className="marquee-track" id="marquee1">
-          {words.map((w, i) => <span key={`a-${i}`}>{w}</span>)}
-          {words.map((w, i) => <span key={`b-${i}`}>{w}</span>)}
+      {/* ========================= ONE PARTNER ========================= */}
+      <div className="hm-partner reveal">
+        <p className="hm-partner-title">One partner</p>
+        <p className="hm-partner-sub">Nothing off the shelf.</p>
+      </div>
+
+      {/* ===================== TWO STACKED CARDS ======================= */}
+      <section className="hm-duo">
+        <div className="hm-duo-line" data-scroll-progress data-start="0.95" data-end="0.15">
+          <img src={lignePath} alt="" aria-hidden="true" />
+        </div>
+
+        <div className="hm-duo-stage">
+          <article className="hm-duo-card hm-duo-card--back reveal-left">
+            <h3 className="u-outline-dark hm-duo-title">Make it real.</h3>
+            <p className="hm-duo-body">
+              An idea becomes real the day a stranger uses it at three in the morning and nothing
+              breaks. We engineer it, we deploy it, we instrument it, and we take the on-call
+              rotation ourselves. The engineers who designed your system are the ones who answer
+              when it fails. In our experience that is the only arrangement which reliably produces
+              systems that do not.
+            </p>
+            <div className="hm-duo-tags">
+              {MAKE_IT_REAL.map((t) => <span key={t}>{t}</span>)}
+            </div>
+          </article>
+
+          <article className="hm-duo-card hm-duo-card--front reveal-right">
+            <h3 className="u-outline-dark hm-duo-title">Invent.</h3>
+            <p className="hm-duo-body">
+              Most teams build what you describe. We get called in when nobody can describe it yet.
+              So we start at the version everyone calls impossible and work backwards from there,
+              separating what is genuinely unknown from what only looks that way. You get that
+              analysis in writing before we commit a single line of production code.
+            </p>
+            <div className="hm-duo-tags">
+              {INVENT.map((t) => <span key={t}>{t}</span>)}
+            </div>
+          </article>
+        </div>
+      </section>
+
+      {/* ===================== SERVICES ACCORDIONS ===================== */}
+      <section className="hm-services" id="services">
+        <div className="hm-services-head reveal">
+          <h2>
+            <span>Research and engineering</span>
+            <span className="u-outline">under one roof</span>
+          </h2>
+          <Link to="/services" className="btn-pill hm-services-btn">View all services</Link>
+        </div>
+
+        <div className="hm-acc">
+          {ACCORDIONS.map(({ num, title, body }) => (
+            <details className="hm-acc-item reveal" key={num}>
+              <summary>
+                <span className="hm-acc-title">{title}</span>
+                <span className="hm-acc-num">{num}</span>
+              </summary>
+              <div className="hm-acc-body"><p>{body}</p></div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <div className="hm-marquee hm-marquee--kw" aria-hidden="true">
+        <div className="hm-marquee-track hm-marquee-track--rev">
+          {[...KEYWORDS, ...KEYWORDS, ...KEYWORDS].map((k, i) => (
+            <span key={`${k}-${i}`}>{k}</span>
+          ))}
         </div>
       </div>
 
-      {/* CAPSULES */}
-      <section className="partner">
-        <div className="partner-stage">
-          <div className="partner-img">
-            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop" alt="Engineering site" />
+      {/* ================= FROM AN IDEA → PRODUCTION =================== */}
+      <section className="hm-arc">
+        <div className="hm-arc-rows">
+          <div className="hm-arc-row hm-arc-row--from reveal-left">
+            <span>From an</span>
+            <b>unproven idea</b>
           </div>
-          <div className="cap c1"><span className="dot"></span>We research</div>
-          <div className="cap c2"><span className="dot"></span>We prototype</div>
-          <div className="cap c3"><span className="dot"></span>We prove it</div>
-          <div className="cap c4"><span className="dot"></span>We operate</div>
-          <div className="cap c5"><span className="dot"></span>We engineer</div>
-          <div className="cap c6"><span className="dot"></span>We deploy</div>
-          <div className="cap c7"><span className="dot"></span>We stay accountable</div>
+          <div className="hm-arc-row hm-arc-row--to reveal-right">
+            <span>a</span>
+            <b>system</b>
+            <span>in production.</span>
+          </div>
         </div>
-      </section>
 
-      {/* STACKED CARDS */}
-      <section className="stack" id="stackSection">
-        <div className="stack-inner" id="stackInner">
-          <div className="paper back">
-            <h3>Make it real.</h3>
-            <p>An idea becomes real the day a stranger uses it at three in the morning and nothing breaks. We engineer it, we deploy it, we instrument it, and we take the on-call rotation ourselves. The engineers who designed your system are the ones who answer when it fails. In our experience that is the only arrangement which reliably produces systems that do not.</p>
-            <div className="tags">
-              <span>Web platforms, native iOS & Android</span>
-              <span>Distributed & real-time backends</span>
-              <span>Production infrastructure & CI/CD</span>
-              <span>Observability, incident response & on-call</span>
-              <span>Documented handover, or none if we stay</span>
-            </div>
+        <div className="hm-stage">
+          <div className="hm-stage-line" data-scroll-progress data-start="0.9" data-end="0.2">
+            <img src={stagePath} alt="" aria-hidden="true" />
           </div>
-          <div className="paper front">
-            <h3>Invent.</h3>
-            <p>Most teams build what you describe. We get called in when nobody can describe it yet. So we start at the version everyone calls impossible and work backwards from there, separating what is genuinely unknown from what only looks that way. You get that analysis in writing before we commit a single line of production code.</p>
-            <div className="tags">
-              <span>Concept framing & feasibility analysis</span>
-              <span>Applied research & technical spikes</span>
-              <span>Algorithm and system design</span>
-              <span>Rapid prototyping in days</span>
-              <span>Written feasibility report & cost envelope</span>
-            </div>
+
+          <div className="hm-stage-cards">
+            {STEPS.map(({ n, title, rotate, lines }, i) => (
+              <article
+                className="hm-step reveal"
+                key={n}
+                style={{ '--rot': `${rotate}deg`, transitionDelay: `${i * 0.12}s` }}
+              >
+                <span className="hm-step-num" aria-hidden="true">{n}</span>
+                <h4 className="u-outline-dark hm-step-title">{title}</h4>
+                <div className="hm-step-body">
+                  {lines.map((l) => <p key={l}>{l}</p>)}
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* SERVICES */}
-      <section className="services" id="services">
-        <div className="wrap">
-          <div className="services-head">
-            <h2>Research and engineering<br />under one roof</h2>
-            <div className="view-btn"><a href="/services">View all services</a></div>
-          </div>
-        </div>
-
-        <div className="svc-row" id="row1">
-          <div className="svc-header">
-            <div className="svc-title">Research & feasibility</div>
-            <span className="svc-num">01</span>
-          </div>
-          <div className="svc-body">
-            <p className="svc-desc">Before anyone commits a budget, we establish whether the difficult part is possible and what it costs to get there. Technical spikes, applied AI experimentation, algorithm design, a working prototype inside a few weeks. The phase ends with a written report: what we proved, what we could not, and what we would advise against attempting at all. Some engagements stop here, on our recommendation.</p>
-          </div>
-        </div>
-
-        <div className="svc-row" id="row2">
-          <div className="svc-header">
-            <div className="svc-title">Engineering & operations</div>
-            <span className="svc-num">02</span>
-          </div>
-          <div className="svc-body">
-            <p className="svc-desc">Then we build the real thing and keep it standing. All of it deployed, hardened, secured and operated by the same people who designed the architecture, not handed off to a stranger once the hard part is over. Security, accessibility and data protection get resolved in the architecture, not bolted on before launch.</p>
-          </div>
-        </div>
-
-        <div className="marquee2-section">
-          <div className="marquee2-track" id="marquee2">
-            {kws.map((k, i) => <span key={`a-${i}`}>{k}</span>)}
-            {kws.map((k, i) => <span key={`b-${i}`}>{k}</span>)}
-          </div>
+      {/* ===================== ADVISORY CROSS-SELL ===================== */}
+      <section className="hm-advisory">
+        <div className="hm-advisory-inner reveal">
+          <h2>
+            Not sure the idea is the right one yet?
+            <span>Our advisory practice can tell you before you build it.</span>
+          </h2>
+          <Link to="/contact" className="hm-advisory-link">
+            <span>Consulting</span>
+            <svg viewBox="0 0 24 16" aria-hidden="true" width="23" height="15">
+              <path d="M1 8h20M15 1l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
         </div>
       </section>
 
-      {/* PROCESS */}
-      <section className="process" id="process">
-        <div className="wrap">
-          <div className="process-head">
-            <h2>From an <span className="pill-word">unproven idea</span> to a <span className="pill-word">system</span> in production.</h2>
+      {/* =========================== BIG CTA ========================== */}
+      <section className="hm-cta" id="contact">
+        <span className="u-glow hm-cta-glow" aria-hidden="true" />
+        <div className="hm-cta-inner reveal">
+          <h2 className="hm-cta-title">
+            <span>Got something</span>
+            <span className="u-outline">nobody will take on?</span>
+          </h2>
+          <p className="hm-cta-desc">
+            Describe the problem rather than the specification. You get back a senior technical
+            opinion, an honest read on what is still unproven, an indicative scope, and the names of
+            the engineers who would do the work. We answer within one business day, and we say no
+            when we should.
+          </p>
+          <div className="hm-cta-action">
+            <Link to="/contact" className="btn-pill btn-pill--lg">Bring us the hard problem</Link>
           </div>
-
-          <div className="steps" id="stepsFan">
-            <div className="step-card">
-              <div className="step-title">Frame</div>
-              <span className="step-num">1</span>
-              <p className="step-desc">We establish what is actually being asked, which constraints are real and which are only assumed, and what success would look like when it proves out.</p>
-            </div>
-            <div className="step-card">
-              <div className="step-title">Prove</div>
-              <span className="step-num">2</span>
-              <p className="step-desc">The step most providers skip. We go after the hardest unknown first, quickly and cheaply, and we report the result honestly whichever way it goes.</p>
-            </div>
-            <div className="step-card">
-              <div className="step-title">Build</div>
-              <span className="step-num">3</span>
-              <p className="step-desc">Design and engineering run as one loop. Working software in a real environment, every week. Progress gets demonstrated rather than reported.</p>
-            </div>
-            <div className="step-card">
-              <div className="step-title">Operate</div>
-              <span className="step-num">4</span>
-              <p className="step-desc">Deployment, scaling, monitoring, incident response. Launch is where the engagement starts, not where it ends.</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="consult-card">
-          <div>
-            <h3>Not sure the idea is the right one yet?</h3>
-            <p>Our advisory practice can tell you before you build it.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* FINAL CTA */}
-      <section className="final-cta" id="contact">
-        <div className="wrap">
-          <h2>Got something<br /><b>nobody will take on?</b></h2>
-          <p>Describe the problem rather than the specification. You get back a senior technical opinion, an honest read on what is still unproven, an indicative scope, and the names of the engineers who would do the work. We answer within one business day, and we say no when we should.</p>
-          <a href="#contact" className="btn-pill" onClick={(e) => handleScrollTo(e, 'contact')}>Bring us the hard problem</a>
         </div>
       </section>
 

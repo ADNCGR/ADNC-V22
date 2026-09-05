@@ -1,135 +1,105 @@
+/* ------------------------------------------------------------------
+   Global footer — Figma 22:2712 (1440 x 691)
+   logo 274x58 at x133/y63 · button 330x44 at x1009/y77
+   copy 20px/1.49 · section titles 32px SemiBold
+   ------------------------------------------------------------------ */
+
 .global-footer {
   width: 100%;
   background: #000000;
   color: #ffffff;
-  padding: 80px 0 60px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  margin-top: 60px;
+  border-top: 1px solid #5d5d5d;
+  padding: clamp(40px, 4.37vw, 63px) 0 clamp(60px, 9vw, 130px);
 }
 
 .global-footer-wrap {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 40px;
+  width: min(1206px, 100% - 2 * var(--page-pad));
+  margin-inline: auto;
 }
 
 .global-footer-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 64px;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
-.global-footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  color: #ffffff;
+.global-footer-logo-img {
+  height: clamp(38px, 4.05vw, 58px);
+  width: auto;
+  display: block;
+  object-fit: contain;
+  transition: opacity 0.25s var(--ease);
 }
 
-.global-footer-logo-text {
-  font-family: 'Fustat', 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 22px;
-  letter-spacing: -0.2px;
-}
+.global-footer-logo:hover .global-footer-logo-img { opacity: 0.8; }
 
-.global-footer-logo-text .grp {
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.65);
-  margin-left: 2px;
-}
-
-.global-footer-btn {
-  border: none;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #0a0a0a;
-  padding: 12px 24px;
-  font-size: 14px;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.global-footer-btn:hover {
-  opacity: 0.9;
-}
-
-.global-footer-btn .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #0a0a0a;
-  display: inline-block;
-}
+.global-footer-btn { flex-shrink: 0; }
 
 .global-footer-grid {
+  margin-top: clamp(48px, 7.8vw, 112px);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  grid-template-columns: minmax(0, 556px) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 100px);
 }
 
-.global-footer-desc {
-  font-family: 'Fustat', 'Inter', sans-serif;
-  font-size: 15px;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0 0 50px;
-  max-width: 480px;
-}
-
-.global-footer-contact h4 {
-  font-family: 'Fustat', 'Inter', sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  margin: 0 0 14px;
+.global-footer-desc,
+.global-footer-address {
+  font-family: var(--fustat);
+  font-weight: 400;
+  font-size: clamp(15px, 1.389vw, 20px);
+  line-height: 1.49;
   color: #ffffff;
 }
 
-.global-footer-contact p {
-  font-family: 'Fustat', 'Inter', sans-serif;
-  font-size: 15px;
-  color: rgba(255, 255, 255, 0.65);
-  margin: 0;
-}
-
-.global-footer-divisions h4 {
-  font-family: 'Fustat', 'Inter', sans-serif;
-  font-size: 24px;
+.global-footer-title {
+  font-family: var(--fustat);
   font-weight: 600;
-  margin: 0 0 20px;
+  font-size: clamp(22px, 2.222vw, 32px);
+  line-height: 1.49;
   color: #ffffff;
 }
+
+.global-footer-col .global-footer-title { margin-top: clamp(40px, 6.7vw, 96px); }
+.global-footer-divisions .global-footer-title { margin-top: 0; }
+
+.global-footer-address { margin-top: 12px; }
 
 .global-footer-divisions ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  margin-top: clamp(20px, 4.3vw, 62px);
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 
 .global-footer-divisions a {
-  font-family: 'Fustat', 'Inter', sans-serif;
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.7);
-  text-decoration: none;
-  transition: color 0.2s ease;
+  font-family: var(--fustat);
+  font-weight: 400;
+  font-size: clamp(15px, 1.389vw, 20px);
+  line-height: 1.86;
+  color: #ffffff;
+  position: relative;
+  width: fit-content;
+  transition: opacity 0.2s var(--ease);
 }
 
-.global-footer-divisions a:hover {
-  color: #ffffff;
+.global-footer-divisions a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--ease);
 }
+
+.global-footer-divisions a:hover::after { transform: scaleX(1); }
 
 @media (max-width: 800px) {
-  .global-footer-wrap { padding: 0 24px; }
-  .global-footer-top { flex-direction: column; align-items: flex-start; gap: 24px; }
   .global-footer-grid { grid-template-columns: 1fr; gap: 40px; }
+  .global-footer-col .global-footer-title { margin-top: 36px; }
+  .global-footer-btn { width: 100%; justify-content: flex-start; }
 }

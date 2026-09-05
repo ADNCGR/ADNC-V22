@@ -9,9 +9,14 @@
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --sans: 'Fustat', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --fustat: 'Fustat', sans-serif;
-  --space: 'Space Grotesk', sans-serif;
+  --fustat: 'Fustat', 'Inter', sans-serif;
+  --space: 'Space Grotesk', 'Fustat', sans-serif;
   --ease: cubic-bezier(.22, .61, .36, 1);
+  --ease-out-expo: cubic-bezier(.16, 1, .3, 1);
+
+  /* Figma canvas is 1440 wide with a 1260 content column. */
+  --page-pad: clamp(20px, 6.25vw, 90px);
+  --content: 1260px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,21 +30,17 @@ body {
 }
 
 .site-frame {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
   min-height: 100vh;
-  background: #040404;
-  border-left: 1.5px solid rgba(255, 255, 255, 0.16);
-  border-right: 1.5px solid rgba(255, 255, 255, 0.16);
+  background: #000000;
   position: relative;
-  box-shadow: 0 0 100px rgba(0, 0, 0, 0.98);
-  transition: background 0.3s ease;
+  transition: background 0.4s var(--ease);
 }
 
 .site-frame.consulting-frame {
   background: #ffffff !important;
-  border-left: 1.5px solid rgba(0, 0, 0, 0.12) !important;
-  border-right: 1.5px solid rgba(0, 0, 0, 0.12) !important;
 }
 
 ::selection { background: #fff; color: #000; }
@@ -47,8 +48,152 @@ a { color: inherit; text-decoration: none; }
 ul { list-style: none; }
 img { max-width: 100%; display: block; }
 
-.wrap { max-width: 1260px; margin: 0 auto; padding: 0 90px; }
+.wrap { width: 100%; max-width: 100%; margin: 0; padding: 0 var(--page-pad); }
 a:focus-visible, button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.consulting-frame a:focus-visible,
+.consulting-frame button:focus-visible { outline-color: #000; }
+
+/* ------------------------------------------------------------------
+   Shared primitives lifted straight out of the Figma component set
+   ------------------------------------------------------------------ */
+
+/* Outlined display type ("scale.", "under one roof", "nobody will take on?") */
+.u-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.4px #ffffff;
+  paint-order: stroke fill;
+}
+
+.u-outline-dark {
+  color: transparent;
+  -webkit-text-stroke: 1.4px #000000;
+  paint-order: stroke fill;
+}
+
+/* White pill button: 330x44, 0.5px border, 67px radius, 7px dot at 32.5px */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 26px;
+  height: 44px;
+  padding: 0 24px 0 32px;
+  border: 0.5px solid #000000;
+  border-radius: 67px;
+  background: #ffffff;
+  color: #000000;
+  font-family: var(--fustat);
+  font-size: clamp(14px, 1.25vw, 18px);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+.btn-pill::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #000000;
+  flex-shrink: 0;
+  transition: transform 0.35s var(--ease);
+}
+
+.btn-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(255, 255, 255, 0.16);
+}
+
+.btn-pill:hover::before { transform: scale(1.9); }
+
+.btn-pill--ghost {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.btn-pill--ghost::before { background: #ffffff; }
+
+.btn-pill--ghost:hover {
+  background: #ffffff;
+  color: #000000;
+  box-shadow: none;
+}
+
+.btn-pill--ghost:hover::before { background: #000000; }
+
+/* Large CTA pill: 494x68, 10.8px dot, 27.8px label */
+.btn-pill--lg {
+  height: clamp(52px, 4.72vw, 68px);
+  padding: 0 40px 0 clamp(28px, 3.5vw, 50px);
+  gap: clamp(20px, 3.5vw, 51px);
+  font-size: clamp(17px, 1.93vw, 27.82px);
+  border-width: 0.773px;
+}
+
+.btn-pill--lg::before { width: 10.818px; height: 10.818px; }
+
+/* Consulting mode uses a hard-edged black rectangle instead of a pill */
+.btn-square {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  height: 52px;
+  padding: 0 24px;
+  background: #000000;
+  color: #ffffff;
+  font-family: var(--fustat);
+  font-size: clamp(14px, 1.25vw, 18px);
+  font-weight: 500;
+  border: 1px solid #000000;
+  cursor: pointer;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.btn-square:hover { transform: translateY(-2px); }
+
+.btn-square--outline {
+  background: transparent;
+  color: #000000;
+}
+
+.btn-square--outline:hover { background: #000000; color: #ffffff; }
+
+/* Soft white glow blobs used behind hero / CTA blocks */
+.u-glow {
+  position: absolute;
+  width: 597px;
+  height: 597px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.33) 0%, rgba(255, 255, 255, 0) 62%);
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ------------------------------------------------------------------
+   Scroll reveal utilities
+   ------------------------------------------------------------------ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .8s var(--ease), transform .8s var(--ease);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+.reveal-left { opacity: 0; transform: translateX(-90px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.reveal-left.in { opacity: 1; transform: translateX(0); }
+
+.reveal-right { opacity: 0; transform: translateX(90px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.reveal-right.in { opacity: 1; transform: translateX(0); }
+
+.reveal-scale { opacity: 0; transform: scale(.94); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.reveal-scale.in { opacity: 1; transform: scale(1); }
 
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -57,17 +202,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid #fff; outline-offset:
     transition-duration: .01ms !important;
     scroll-behavior: auto !important;
   }
+  .reveal, .reveal-left, .reveal-right, .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
-
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity .8s var(--ease), transform .8s var(--ease);
-}
-.reveal.in {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media(max-width:1100px) { .wrap { padding: 0 40px; } }
-@media(max-width:860px) { .wrap { padding: 0 20px; } }
