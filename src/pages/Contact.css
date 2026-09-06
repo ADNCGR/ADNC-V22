@@ -279,3 +279,22 @@
   .ct-aside { gap: 28px; }
   .ct-chips { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* Figma omits the footer CTA on the contact pages (nodes 22:2862 / 22:3015's
+   footer have no button child) — you are already on the contact form. */
+.ct-root .global-footer-btn,
+.ct-root .cs-footer-cta { display: none; }
+
+/* The consulting headline runs the full content column in Figma, so it wraps
+   onto two lines rather than three. */
+.ct-root--cons .ct-title { max-width: 1206px; }
+
+/* The consulting frame runs to ~83px margins (vs 117px on the dev frame),
+   which is what lets the headline hold two lines. */
+.ct-root--cons .ct-main {
+  width: min(1274px, 100% - 2 * clamp(16px, 5.76vw, 83px));
+}
+
+/* supersede the 1206px cap above — the line needs ~1207px, and Figma tracks
+   its display type slightly tight */
+.ct-root--cons .ct-title { max-width: none; letter-spacing: -0.015em; }

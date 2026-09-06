@@ -671,3 +671,52 @@
   gap: 32px;
   font-size: clamp(15px, 1.667vw, 24px);
 }
+
+/* Hero proportions from the Figma render: the tower is ~526x752 at 1440 and
+   the intro block sits ~250px below the headline. */
+.c-hero { padding-top: clamp(40px, 6.9vw, 100px); }
+
+.c-intro { margin-top: clamp(48px, 17.4vw, 250px); }
+
+.c-intro-image {
+  flex: 0 1 530px;
+  max-width: 545px;
+  min-height: clamp(420px, 48.6vw, 700px);
+}
+
+/* The tower export carries its own feathered edge and green glow — cropping it
+   to a box turned that into a hard rectangle with a green band. */
+.c-intro-image {
+  overflow: visible;
+  border-bottom-left-radius: 0;
+  background: transparent;
+  min-height: 0;
+  align-self: center;
+}
+
+.c-intro-image img {
+  height: auto;
+  object-fit: contain;
+}
+
+.c-intro-image .brand { bottom: clamp(20px, 4.5vw, 65px); left: clamp(10px, 1.1vw, 16px); }
+
+/* Figma feathers the tower in-file rather than in the export, so soften the
+   edges here instead of shipping a hard-cropped rectangle. */
+.c-intro-image {
+  -webkit-mask-image: radial-gradient(ellipse 80% 76% at 52% 44%, #000 52%, rgba(0,0,0,0) 100%);
+  mask-image: radial-gradient(ellipse 80% 76% at 52% 44%, #000 52%, rgba(0,0,0,0) 100%);
+}
+
+/* edge-only feather: keeps the tower crisp, softens where Figma bleeds it
+   into the white page (radial masking hollowed out the middle instead) */
+.c-intro-image {
+  -webkit-mask-image:
+    linear-gradient(to bottom, rgba(0,0,0,0) 0%, #000 14%, #000 72%, rgba(0,0,0,0) 100%),
+    linear-gradient(to right, rgba(0,0,0,0) 0%, #000 12%, #000 86%, rgba(0,0,0,0) 100%);
+  mask-image:
+    linear-gradient(to bottom, rgba(0,0,0,0) 0%, #000 14%, #000 72%, rgba(0,0,0,0) 100%),
+    linear-gradient(to right, rgba(0,0,0,0) 0%, #000 12%, #000 86%, rgba(0,0,0,0) 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
