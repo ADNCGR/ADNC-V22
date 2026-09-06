@@ -207,3 +207,26 @@ a:focus-visible, button:focus-visible { outline: 2px solid #fff; outline-offset:
     transform: none !important;
   }
 }
+
+/* ------------------------------------------------------------------
+   Marquee hover — Figma note 22:2806/2807/2810/2811 (x4):
+   "lkelmat tidouzou 3adi bchwiya o l hover ela ay kelma hna tatkbar
+    odouk li fjnaab tin9es lihoum l'opacity diyalhoum chwiya"
+   → words drift slowly; hovering one scales it up and dims its
+     neighbours. The track pauses so a moving word stays catchable.
+   ------------------------------------------------------------------ */
+
+.u-marquee-hover span {
+  display: inline-block;
+  transition: opacity .35s var(--ease), transform .35s var(--ease-out-expo);
+  transform-origin: center;
+}
+
+.u-marquee-hover:hover { animation-play-state: paused; }
+.u-marquee-hover:hover span { opacity: .3; }
+.u-marquee-hover span:hover { opacity: 1; transform: scale(1.28); }
+
+@media (prefers-reduced-motion: reduce) {
+  .u-marquee-hover:hover span { opacity: 1; }
+  .u-marquee-hover span:hover { transform: none; }
+}

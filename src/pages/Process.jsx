@@ -232,7 +232,7 @@ const RUN_TABS = [
   },
 ];
 
-const TAB_DURATION = 7000;
+const TAB_DURATION = 3500; // Figma note 22:2808 — "waed 3s wela 4"
 
 const ConsultingProcess = () => {
   const [active, setActive] = useState(0);

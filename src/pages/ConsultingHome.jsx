@@ -46,7 +46,7 @@ const ConsultingHome = () => {
 
       {/* MARQUEE 1 */}
       <div className="c-marquee-band">
-        <div className="c-marquee-track">
+        <div className="c-marquee-track u-marquee-hover">
           <span>We measure</span><span className="dot"></span>
           <span>We model</span><span className="dot"></span>
           <span>We challenge</span><span className="dot"></span>
@@ -178,7 +178,7 @@ const ConsultingHome = () => {
 
       {/* MARQUEE 2 */}
       <div className="c-marquee-band skills">
-        <div className="c-marquee-track">
+        <div className="c-marquee-track u-marquee-hover">
           <span>Data analysis ✦ &nbsp;&nbsp; Decision science ✦ &nbsp;&nbsp; Forecasting ✦ &nbsp;&nbsp; Risk modelling ✦ &nbsp;&nbsp; Digital strategy ✦ &nbsp;&nbsp; Business intelligence ✦ &nbsp;&nbsp; Financial advisory ✦ &nbsp;&nbsp; Any sector ✦ &nbsp;&nbsp;</span>
           <span>Data analysis ✦ &nbsp;&nbsp; Decision science ✦ &nbsp;&nbsp; Forecasting ✦ &nbsp;&nbsp; Risk modelling ✦ &nbsp;&nbsp; Digital strategy ✦ &nbsp;&nbsp; Business intelligence ✦ &nbsp;&nbsp; Financial advisory ✦ &nbsp;&nbsp; Any sector ✦ &nbsp;&nbsp;</span>
         </div>

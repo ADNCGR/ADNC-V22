@@ -179,7 +179,7 @@ const Home = () => {
 
       {/* ========================= ADNC MARQUEE ======================== */}
       <div className="hm-marquee hm-marquee--adnc" aria-hidden="true">
-        <div className="hm-marquee-track">
+        <div className="hm-marquee-track u-marquee-hover">
           {Array.from({ length: 20 }).map((_, i) => (
             <span key={i}>ADNC</span>
           ))}
@@ -274,7 +274,7 @@ const Home = () => {
       </section>
 
       <div className="hm-marquee hm-marquee--kw" aria-hidden="true">
-        <div className="hm-marquee-track hm-marquee-track--rev">
+        <div className="hm-marquee-track hm-marquee-track--rev u-marquee-hover">
           {[...KEYWORDS, ...KEYWORDS, ...KEYWORDS].map((k, i) => (
             <span key={`${k}-${i}`}>{k}</span>
           ))}

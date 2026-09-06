@@ -698,3 +698,53 @@
   .sv-c-eq-hint { display: none; }
   .sv-c-eq-fade { display: none; }
 }
+
+/* ---------------- equation reel (Figma note 22:2809) ----------------
+   The grey band is a fixed window; the reel of rows slides up as you
+   scroll and settles with the real equation centred in it. */
+.sv-c-eq {
+  --rowh: clamp(62px, 6.6vw, 95px);
+  position: relative;
+  height: calc(var(--rowh) * 3.4);
+  overflow: hidden;
+  padding: 0;
+}
+
+.sv-c-eq-band {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(1234px, 100%);
+  height: var(--rowh);
+  background: #d9d9d9;
+  z-index: 0;
+}
+
+.sv-c-eq-reel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  z-index: 1;
+  /* row 0 centred at --p 0, the main row (index 2) centred at --p 1 */
+  transform: translateY(calc(-1 * (var(--p, 0) * 2 + 0.5) * var(--rowh)));
+  will-change: transform;
+}
+
+.sv-c-eq-reel .sv-c-eq-row {
+  height: var(--rowh);
+  align-content: center;
+  padding-block: 0;
+}
+
+.sv-c-eq-fade { z-index: 2; }
+
+@media (max-width: 700px) {
+  /* no reel on a phone — show the settled equation only */
+  .sv-c-eq { height: auto; overflow: visible; }
+  .sv-c-eq-band { display: none; }
+  .sv-c-eq-reel { position: static; transform: none; }
+  .sv-c-eq-reel .sv-c-eq-row--ghost { display: none; }
+  .sv-c-eq-reel .sv-c-eq-row { height: auto; }
+}

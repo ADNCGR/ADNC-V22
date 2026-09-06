@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ConsultingFooter from '../components/ConsultingFooter';
 import { useMode } from '../context/ModeContext';
-import { useReveal } from '../hooks/useScrollFx';
+import { useReveal, useScrollProgress } from '../hooks/useScrollFx';
 
 import heroBg from '../assets/hero-services.jpg';
 import pin from '../assets/figma/pin.png';
@@ -189,6 +189,11 @@ const DevelopmentServices = () => {
    PAGE 2 — PRACTICE / SERVICES (mode Consulting) — Figma 22:3548
    ================================================================ */
 
+const EQ_DECOYS = [
+  ['text text text', 'Assumption', 'text text text'],
+  ['text text text', 'Gut Feeling / Intuition', 'text text text'],
+];
+
 const PRACTICE_LEFT = [
   'Data audit & instrumentation',
   'Forecasting & predictive modelling',
@@ -228,6 +233,7 @@ const ENGAGEMENTS = [
 
 const ConsultingServices = () => {
   useReveal([]);
+  useScrollProgress([]);
 
   return (
     <div className="cs-root sv-c-root">
@@ -249,19 +255,21 @@ const ConsultingServices = () => {
           </p>
         </section>
 
-        {/* ------------------------- THE EQUATION ------------------------- */}
-        <section className="sv-c-eq reveal" aria-label="Our method at a glance">
-          <img src={eqBar} alt="" className="sv-c-eq-fade sv-c-eq-fade--top" aria-hidden="true" />
+        {/* ------------------------- THE EQUATION -------------------------
+            Figma note 22:2809 — "fach tathebet ltet douk lkelmat titbedlou
+            mn l fo9 ltet fihoum kamlin otatfiksa 3ela sab chnou kayn fl
+            calcule": scrolling cycles the words downward until they settle
+            on the real equation. The grey band is the fixed window. */}
+        <section className="sv-c-eq" aria-label="Our method at a glance">
+          <span className="sv-c-eq-band" aria-hidden="true" />
 
-          <div className="sv-c-eq-row sv-c-eq-row--ghost" aria-hidden="true">
-            <span>text text text</span>
-            <span />
-            <span>Gut Feeling / Intuition</span>
-            <span />
-            <span>text text text</span>
-          </div>
+          <div className="sv-c-eq-reel" data-scroll-progress data-start="0.88" data-end="0.42">
+            {EQ_DECOYS.map(([a, mid, c]) => (
+              <div className="sv-c-eq-row sv-c-eq-row--ghost" key={mid} aria-hidden="true">
+                <span>{a}</span><span /><span>{mid}</span><span /><span>{c}</span>
+              </div>
+            ))}
 
-          <div className="sv-c-eq-band">
             <div className="sv-c-eq-row sv-c-eq-row--main">
               <span className="sv-c-eq-box">Variable Sector</span>
               <span className="sv-c-eq-op">×</span>
@@ -274,16 +282,13 @@ const ConsultingServices = () => {
                 Proven Decision
               </span>
             </div>
+
+            <div className="sv-c-eq-row sv-c-eq-row--ghost" aria-hidden="true">
+              <span>text text text</span><span /><span>Market Hype</span><span /><span>text text tex</span>
+            </div>
           </div>
 
-          <div className="sv-c-eq-row sv-c-eq-row--ghost" aria-hidden="true">
-            <span>text text text</span>
-            <span />
-            <span>Market Hype</span>
-            <span />
-            <span>text text tex</span>
-          </div>
-
+          <img src={eqBar} alt="" className="sv-c-eq-fade sv-c-eq-fade--top" aria-hidden="true" />
           <img src={eqBar} alt="" className="sv-c-eq-fade sv-c-eq-fade--bottom" aria-hidden="true" />
 
           <span className="sv-c-eq-hint" aria-hidden="true">
