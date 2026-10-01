@@ -11,6 +11,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
   </head>
   <body>
+    <!-- Outlined display type. The web fonts are variable fonts whose glyphs are
+         built from overlapping contours, so a plain -webkit-text-stroke draws
+         those inner seams. The text is painted stroke-then-fill in two opposite
+         tones and these filters knock the fill back out to transparent. -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <!-- white stroke over black fill -> white outline -->
+        <filter id="outline-light" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+          <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 1 0 1 -1" />
+        </filter>
+        <!-- black stroke over white fill -> black outline -->
+        <filter id="outline-dark" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+          <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 -1 0 1 0" />
+        </filter>
+      </defs>
+    </svg>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

@@ -51,7 +51,7 @@
   max-width: 973px;
 }
 
-.pr-title .u-outline { -webkit-text-stroke-width: clamp(0.8px, 0.09vw, 1.3px); }
+.pr-title .u-outline { --outline-w: clamp(0.8px, 0.09vw, 1.3px); }
 
 .pr-lede {
   margin-top: clamp(32px, 4.6vw, 66px);
@@ -98,7 +98,7 @@
   text-align: center;
 }
 
-.pr-h2 .u-outline { -webkit-text-stroke-width: clamp(0.8px, 0.08vw, 1.2px); }
+.pr-h2 .u-outline { --outline-w: clamp(0.8px, 0.08vw, 1.2px); }
 
 .pr-measure-list {
   margin: clamp(36px, 5.9vw, 85px) auto 0;
@@ -284,7 +284,7 @@
 }
 
 .pr-cta-grey { color: #d9d9d9; }
-.pr-cta h2 .u-outline { -webkit-text-stroke-width: clamp(1px, 0.1vw, 1.5px); }
+.pr-cta h2 .u-outline { --outline-w: clamp(1px, 0.1vw, 1.5px); }
 
 .pr-cta-btn {
   height: clamp(48px, 3.93vw, 56.65px);
@@ -360,7 +360,7 @@
   font-weight: 400;
   font-size: clamp(70px, 17.36vw, 250px);
   line-height: 1.1;
-  -webkit-text-stroke-width: clamp(1px, 0.1vw, 1.5px);
+  --outline-w: clamp(1px, 0.1vw, 1.5px);
   white-space: nowrap;
 }
 

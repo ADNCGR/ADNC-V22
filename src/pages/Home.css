@@ -57,7 +57,7 @@
 
 .hm-hero-outline {
   font-style: normal;
-  -webkit-text-stroke-width: clamp(1px, 0.14vw, 2px);
+  --outline-w: clamp(1px, 0.14vw, 2px);
 }
 
 .hm-hero-row {
@@ -331,7 +331,7 @@
   font-weight: 800;
   font-size: clamp(20px, 2.5vw, 36px);
   line-height: 1.11;
-  -webkit-text-stroke-width: 1px;
+  --outline-w: 1px;
 }
 
 .hm-duo-body {
@@ -563,8 +563,7 @@
   line-height: 1.11;
   text-transform: uppercase;
   white-space: nowrap;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: #000;
+  --outline-w: 1px;
 }
 
 .hm-step:nth-child(3) .hm-step-title { font-size: 7.6vw; }
@@ -689,7 +688,7 @@
 
 .hm-cta-title .u-outline {
   font-weight: 800;
-  -webkit-text-stroke-width: clamp(1px, 0.1vw, 1.5px);
+  --outline-w: clamp(1px, 0.1vw, 1.5px);
 }
 
 .hm-cta-desc {

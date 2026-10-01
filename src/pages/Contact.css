@@ -33,7 +33,7 @@
 .ct-title .u-outline,
 .ct-title .u-outline-dark {
   font-weight: 800;
-  -webkit-text-stroke-width: clamp(1px, 0.1vw, 1.5px);
+  --outline-w: clamp(1px, 0.1vw, 1.5px);
 }
 
 .ct-body {

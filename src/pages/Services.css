@@ -230,7 +230,7 @@
   font-weight: 700;
   font-size: clamp(30px, 5.634vw, 81.127px);
   line-height: 1.11;
-  -webkit-text-stroke-width: 1.2px;
+  --outline-w: 1.2px;
   pointer-events: none;
 }
 
@@ -292,7 +292,7 @@
   white-space: nowrap;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  -webkit-text-stroke-width: 1.2px;
+  --outline-w: 1.2px;
 }
 
 /* ------------------------------ OFFER GRID -------------------------- */
@@ -402,7 +402,7 @@
 
 .sv-c-hero h1 .u-outline-dark {
   font-weight: 800;
-  -webkit-text-stroke-width: clamp(1px, 0.11vw, 1.6px);
+  --outline-w: clamp(1px, 0.11vw, 1.6px);
 }
 
 .sv-c-hero p {
@@ -564,7 +564,7 @@
 
 .sv-c-col h2 .u-outline-dark {
   font-weight: 700;
-  -webkit-text-stroke-width: 1px;
+  --outline-w: 1px;
 }
 
 .sv-c-col ul {
@@ -631,7 +631,7 @@
   font-size: clamp(18px, 2.5vw, 36px);
   line-height: 1;
   text-transform: uppercase;
-  -webkit-text-stroke-width: 1px;
+  --outline-w: 1px;
 }
 
 .sv-c-card p {

@@ -58,16 +58,24 @@ a:focus-visible, button:focus-visible { outline: 2px solid #fff; outline-offset:
    ------------------------------------------------------------------ */
 
 /* Outlined display type ("scale.", "under one roof", "nobody will take on?") */
+/* The fill is painted over the inner half of the stroke (hiding the seams of
+   the variable-font glyphs), then the #outline-* filter in index.html makes it
+   transparent. Only the outer half of the stroke stays visible, hence 2x.
+   Set the visible thickness with --outline-w. */
 .u-outline {
-  color: transparent;
-  -webkit-text-stroke: 1.4px #ffffff;
+  --outline-w: 1.4px;
+  color: #000000;
+  -webkit-text-stroke: calc(2 * var(--outline-w)) #ffffff;
   paint-order: stroke fill;
+  filter: url(#outline-light);
 }
 
 .u-outline-dark {
-  color: transparent;
-  -webkit-text-stroke: 1.4px #000000;
+  --outline-w: 1.4px;
+  color: #ffffff;
+  -webkit-text-stroke: calc(2 * var(--outline-w)) #000000;
   paint-order: stroke fill;
+  filter: url(#outline-dark);
 }
 
 /* White pill button: 330x44, 0.5px border, 67px radius, 7px dot at 32.5px */
