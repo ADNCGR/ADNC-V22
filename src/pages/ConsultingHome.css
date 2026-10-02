@@ -349,6 +349,9 @@
 
 .c-service-card .pill {
   position: absolute;
+  /* same left edge as the paragraph below, so every label sits inside its card */
+  left: 32px;
+  top: 40px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -360,6 +363,8 @@
   z-index: 1;
   white-space: nowrap;
 }
+
+.c-service-card .pill svg { flex: none; }
 
 .c-service-card p {
   position: absolute;
@@ -384,23 +389,18 @@
 
 /* per-card placement matching Figma coordinates exactly */
 .card-1 { grid-column: 1; grid-row: 1; align-self: start; height: 395px; transform: rotate(6deg); }
-.card-1 .pill { left: 63.6px; top: 39.88px; }
 .card-1 .card-deco { left: 320.73px; top: 53.69px; width: 63.96px; }
 
 .card-2 { grid-column: 1; grid-row: 2; align-self: start; height: 451px; transform: rotate(-8deg); }
-.card-2 .pill { left: 33.62px; top: 44.05px; }
 .card-2 .card-deco { left: 295.17px; top: 69.24px; width: 65.26px; }
 
 .card-3 { grid-column: 2; grid-row: 1 / span 2; align-self: center; height: 476px; transform: rotate(-3deg); }
-.card-3 .pill { left: 30.8px; top: 43.9px; }
 .card-3 .card-deco { left: 270.95px; top: 48.37px; width: 60.85px; }
 
 .card-4 { grid-column: 3; grid-row: 1; align-self: start; height: 476px; transform: rotate(4deg); }
-.card-4 .pill { left: 60.22px; top: 39.12px; }
 .card-4 .card-deco { left: 313.83px; top: 104.98px; width: 62.37px; }
 
 .card-5 { grid-column: 3; grid-row: 2; align-self: start; height: 401px; transform: rotate(11deg); }
-.card-5 .pill { left: 93.37px; top: 41.96px; }
 .card-5 .card-deco { left: 329.76px; top: 134px; width: 68.42px; }
 
 /* PROCESS */
@@ -595,6 +595,9 @@
   .c-service-card .pill {
     position: static !important;
     margin-bottom: 14px;
+    /* long labels wrap instead of running out of the card / under the pin */
+    max-width: calc(100% - 56px);
+    white-space: normal;
   }
   .c-service-card p {
     position: static !important;

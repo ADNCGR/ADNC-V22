@@ -1,0 +1,23 @@
+.cursor-blob {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background: #050505;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  z-index: 3000;
+  transition: width 0.25s ease, height 0.25s ease, background 0.25s ease;
+}
+
+.cursor-blob[data-hover='1'] {
+  width: 72px;
+  height: 72px;
+  background: #ffffff;
+}
+
+@media (pointer: coarse) {
+  .cursor-blob { display: none; }
+}

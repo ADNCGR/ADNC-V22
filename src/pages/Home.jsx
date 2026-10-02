@@ -38,6 +38,28 @@ const CAPSULES = [
   { label: 'We stay accountable', icon: iconClipboard, style: { top: '87.73%', left: '24.9%' } },
 ];
 
+/* Technology marks in the top marquee — [symbol id in public/tech-logos.svg, name] */
+const TECH_SPRITE = `${import.meta.env.BASE_URL}tech-logos.svg`;
+const TECH_LOGOS = [
+  ['amazonaws', 'AWS'], ['googlecloud', 'Google Cloud'], ['microsoftazure', 'Microsoft Azure'],
+  ['openai', 'OpenAI'], ['vercel', 'Vercel'], ['supabase', 'Supabase'], ['python', 'Python'],
+  ['django', 'Django'], ['redis', 'Redis'], ['postman', 'Postman'],
+  ['docker', 'Docker'], ['react', 'React'], ['anthropic', 'Anthropic'], ['postgresql', 'PostgreSQL'],
+  ['kubernetes', 'Kubernetes'], ['typescript', 'TypeScript'], ['github', 'GitHub'], ['stripe', 'Stripe'],
+  ['nextdotjs', 'Next.js'], ['cloudflare', 'Cloudflare'], ['mongodb', 'MongoDB'], ['swift', 'Swift'],
+  ['huggingface', 'Hugging Face'], ['terraform', 'Terraform'], ['nodedotjs', 'Node.js'], ['figma', 'Figma'],
+  ['firebase', 'Firebase'], ['kotlin', 'Kotlin'], ['pytorch', 'PyTorch'], ['graphql', 'GraphQL'],
+  ['fastapi', 'FastAPI'], ['gitlab', 'GitLab'], ['datadog', 'Datadog'], ['tailwindcss', 'Tailwind CSS'],
+  ['apachekafka', 'Apache Kafka'], ['go', 'Go'], ['langchain', 'LangChain'], ['sentry', 'Sentry'],
+  ['flutter', 'Flutter'], ['elasticsearch', 'Elasticsearch'], ['netlify', 'Netlify'], ['rust', 'Rust'],
+  ['tensorflow', 'TensorFlow'], ['grafana', 'Grafana'], ['mysql', 'MySQL'], ['slack', 'Slack'],
+  ['prisma', 'Prisma'], ['digitalocean', 'DigitalOcean'], ['nvidia', 'NVIDIA'], ['githubactions', 'GitHub Actions'],
+  ['javascript', 'JavaScript'], ['snowflake', 'Snowflake'], ['auth0', 'Auth0'], ['mistralai', 'Mistral AI'],
+  ['nginx', 'NGINX'], ['twilio', 'Twilio'], ['prometheus', 'Prometheus'], ['android', 'Android'],
+  ['notion', 'Notion'], ['databricks', 'Databricks'], ['linear', 'Linear'], ['jira', 'Jira'],
+  ['vite', 'Vite'], ['linux', 'Linux'],
+];
+
 const KEYWORDS = [
   '✦ Applied research', '✦ Feasibility', '✦ Prototyping', '✦ Product design',
   '✦ Native mobile', '✦ Real-time', '✦ Applied AI', '✦ Production & scale',
@@ -177,12 +199,26 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ========================= ADNC MARQUEE ======================== */}
-      <div className="hm-marquee hm-marquee--adnc" aria-hidden="true">
+      {/* ========================= TECH MARQUEE ======================== */}
+      <div className="hm-marquee hm-marquee--tech" aria-label="Technologies we work with">
         <div className="hm-marquee-track u-marquee-hover">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <span key={i}>ADNC</span>
-          ))}
+          {/* rendered twice so the -50% loop is seamless; the copy is hidden from AT */}
+          {[0, 1].map((copy) =>
+            TECH_LOGOS.map(([id, name]) => (
+              <span
+                className="hm-tech-logo"
+                key={`${id}-${copy}`}
+                title={name}
+                role={copy ? undefined : 'img'}
+                aria-label={copy ? undefined : name}
+                aria-hidden={copy ? 'true' : undefined}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <use href={`${TECH_SPRITE}#${id}`} />
+                </svg>
+              </span>
+            )),
+          )}
         </div>
       </div>
 

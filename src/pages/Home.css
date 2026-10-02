@@ -141,6 +141,29 @@
   white-space: nowrap;
 }
 
+/* Technology marks: one colour, spaced with margins (not gap) so the two
+   copies are exactly half the track and the loop has no jump. */
+.hm-marquee--tech .hm-marquee-track {
+  gap: 0;
+  align-items: center;
+  min-height: 50px;
+  animation-duration: 110s;
+}
+
+.hm-marquee .hm-tech-logo {
+  flex: none;
+  margin-right: clamp(36px, 5vw, 72px);
+  line-height: 0;
+  color: #fff;
+}
+
+.hm-tech-logo svg {
+  display: block;
+  width: clamp(28px, 2.7vw, 40px);
+  height: clamp(28px, 2.7vw, 40px);
+  fill: currentColor;
+}
+
 @keyframes hm-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -535,10 +558,13 @@
   background: #fff;
   color: #000;
   border-radius: 12px;
-  overflow: hidden;
+  overflow: clip;            /* clip, not hidden: the card may still grow with its text */
   transform: rotate(var(--rot, 0deg));
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
   transition: transform 0.5s var(--ease), box-shadow 0.4s var(--ease);
+  /* the title, number and gutters are sized in cqw so they stay inside the
+     card at every card width (desktop stage and the stacked grid alike) */
+  container-type: inline-size;
 }
 
 .reveal.hm-step { transform: translateY(34px) rotate(var(--rot, 0deg)); }
@@ -553,39 +579,42 @@
 .hm-step:nth-child(3) { left: 49.8%; top: 12.5%; }
 .hm-step:nth-child(4) { left: 71.4%; top: 20.4%; }
 
+/* Each word is sized to span the card's text column (83.4cqw) exactly:
+   font-size = 82 / (word width in em). Fustat 800 caps are 0.7em tall, so a
+   0.7 line-height nudged down 0.06em makes the box hug the letters. */
 .hm-step-title {
-  position: absolute;
-  left: -0.7vw;
-  top: -1.5vw;
+  position: relative;
+  top: 0.06em;
+  margin: 8.3cqw 8.3cqw 0;
   font-family: var(--fustat);
   font-weight: 800;
-  font-size: 6.1vw;
-  line-height: 1.11;
+  font-size: 23.9cqw;        /* FRAME — 3.43em wide */
+  line-height: 0.7;
   text-transform: uppercase;
   white-space: nowrap;
   --outline-w: 1px;
 }
 
-.hm-step:nth-child(3) .hm-step-title { font-size: 7.6vw; }
-.hm-step:nth-child(4) .hm-step-title { font-size: 4.65vw; }
+.hm-step:nth-child(2) .hm-step-title { font-size: 23.4cqw; }  /* PROVE — 3.50em */
+.hm-step:nth-child(3) .hm-step-title { font-size: 29.2cqw; }  /* BUILD — 2.80em */
+.hm-step:nth-child(4) .hm-step-title { font-size: 17.9cqw; }  /* OPERATE — 4.57em */
 
 .hm-step-num {
   position: absolute;
-  left: 58%;
-  top: 43%;
+  right: 7cqw;
+  bottom: 7cqw;
   font-family: var(--fustat);
   font-weight: 800;
-  font-size: 16.45vw;
-  line-height: 1.11;
+  font-size: 62cqw;
+  line-height: 0.7;
+  transform: translateY(0.06em);
   color: rgba(228, 228, 228, 0.8);
   pointer-events: none;
 }
 
 .hm-step-body {
-  position: absolute;
-  left: 8.3%;
-  top: 23%;
-  width: 83.7%;
+  position: relative;
+  margin: 6cqw 8.3cqw 8.3cqw;
 }
 
 .hm-step-body p {
@@ -761,10 +790,6 @@
     aspect-ratio: 276 / 351;
     transform: none !important;
   }
-  .hm-step-title,
-  .hm-step:nth-child(3) .hm-step-title,
-  .hm-step:nth-child(4) .hm-step-title { font-size: 56px; left: -6px; top: -14px; }
-  .hm-step-num { font-size: 150px; }
   .hm-step-body p { font-size: 13px; }
 
   .hm-advisory-inner { align-items: flex-start; }

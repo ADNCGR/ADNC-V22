@@ -4,12 +4,11 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ConsultingFooter from '../components/ConsultingFooter';
 import { useMode } from '../context/ModeContext';
-import { useReveal, useScrollProgress } from '../hooks/useScrollFx';
+import { useReveal } from '../hooks/useScrollFx';
+import DecisionSlot from '../components/DecisionSlot';
 
 import heroBg from '../assets/hero-services.jpg';
 import pin from '../assets/figma/pin.png';
-import eqBar from '../assets/figma/eq-bar.png';
-import icons3d from '../assets/figma/3dicons.png';
 
 import './Services.css';
 
@@ -189,11 +188,6 @@ const DevelopmentServices = () => {
    PAGE 2 — PRACTICE / SERVICES (mode Consulting) — Figma 22:3548
    ================================================================ */
 
-const EQ_DECOYS = [
-  ['text text text', 'Assumption', 'text text text'],
-  ['text text text', 'Gut Feeling / Intuition', 'text text text'],
-];
-
 const PRACTICE_LEFT = [
   'Data audit & instrumentation',
   'Forecasting & predictive modelling',
@@ -233,7 +227,6 @@ const ENGAGEMENTS = [
 
 const ConsultingServices = () => {
   useReveal([]);
-  useScrollProgress([]);
 
   return (
     <div className="cs-root sv-c-root">
@@ -256,49 +249,10 @@ const ConsultingServices = () => {
         </section>
 
         {/* ------------------------- THE EQUATION -------------------------
-            Figma note 22:2809 — "fach tathebet ltet douk lkelmat titbedlou
-            mn l fo9 ltet fihoum kamlin otatfiksa 3ela sab chnou kayn fl
-            calcule": scrolling cycles the words downward until they settle
-            on the real equation. The grey band is the fixed window. */}
-        <section className="sv-c-eq" aria-label="Our method at a glance">
-          <span className="sv-c-eq-band" aria-hidden="true" />
-
-          <div className="sv-c-eq-reel" data-scroll-progress data-start="0.88" data-end="0.42">
-            {EQ_DECOYS.map(([a, mid, c]) => (
-              <div className="sv-c-eq-row sv-c-eq-row--ghost" key={mid} aria-hidden="true">
-                <span>{a}</span><span /><span>{mid}</span><span /><span>{c}</span>
-              </div>
-            ))}
-
-            <div className="sv-c-eq-row sv-c-eq-row--main">
-              <span className="sv-c-eq-box">Variable Sector</span>
-              <span className="sv-c-eq-op">×</span>
-              <span className="sv-c-eq-plain">Fixed Data Methodology</span>
-              <span className="sv-c-eq-op">=</span>
-              <span className="sv-c-eq-box sv-c-eq-box--proven">
-                <svg viewBox="0 0 23 18" width="22" height="17" aria-hidden="true">
-                  <path d="M7.26 17.84L0 10.58L3.16 7.58L7.26 11.69L18.95 0L22.11 3.16L7.26 17.84Z" fill="currentColor" />
-                </svg>
-                Proven Decision
-              </span>
-            </div>
-
-            <div className="sv-c-eq-row sv-c-eq-row--ghost" aria-hidden="true">
-              <span>text text text</span><span /><span>Market Hype</span><span /><span>text text tex</span>
-            </div>
-          </div>
-
-          <img src={eqBar} alt="" className="sv-c-eq-fade sv-c-eq-fade--top" aria-hidden="true" />
-          <img src={eqBar} alt="" className="sv-c-eq-fade sv-c-eq-fade--bottom" aria-hidden="true" />
-
-          <span className="sv-c-eq-hint" aria-hidden="true">
-            <img src={icons3d} alt="" className="sv-c-eq-ball" />
-            <svg viewBox="0 0 40 24" width="26" height="16"><path d="M3 4L20 20L36 3" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg>
-            <svg viewBox="0 0 40 24" width="26" height="16"><path d="M3 4L20 20L36 3" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg>
-            <span className="sv-c-eq-stem" />
-            <img src={icons3d} alt="" className="sv-c-eq-ball sv-c-eq-ball--sm" />
-          </span>
-        </section>
+            Figma note 22:2809 asks for the words to cycle until they settle on
+            the result of the calculation — built as a slot machine: sector ×
+            method = outcome, and only the method decides the outcome. */}
+        <DecisionSlot />
 
         {/* ------------------------ PRACTICE AREAS ------------------------ */}
         <section className="sv-c-practice">

@@ -217,6 +217,16 @@
   height: auto;
   transform: rotate(-10deg);
   z-index: 2;
+  /* the artwork is a white pin on an opaque black square: "screen" drops the
+     black on dark cards … */
+  mix-blend-mode: screen;
+}
+
+/* … and on white cards the image is inverted (black pin on white) and the
+   white square is multiplied away */
+.pr-postit--light .pr-pin {
+  filter: invert(1);
+  mix-blend-mode: multiply;
 }
 
 .pr-step--right .pr-pin { transform: rotate(9.68deg); }

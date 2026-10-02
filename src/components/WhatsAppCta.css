@@ -1,0 +1,83 @@
+/* Floating WhatsApp button — bottom-right on every page.
+   White on the dark (Development) pages, black on the light (Consulting) ones. */
+
+.wa-fab {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1500;
+  display: inline-flex;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid rgba(5, 5, 5, 0.1);
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #050505;
+  text-decoration: none;
+  transition: background 0.5s var(--ease), color 0.5s var(--ease), border-color 0.5s var(--ease);
+  animation: wa-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.9s both;
+}
+
+.wa-fab:hover { background: rgba(255, 255, 255, 0.9); }
+
+.wa-fab svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* the label unrolls on hover (pointer devices, wide screens only) */
+.wa-label {
+  display: none;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--inter);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  opacity: 0;
+  transition: max-width 0.5s var(--ease), margin-left 0.5s var(--ease), opacity 0.5s var(--ease);
+}
+
+.wa-ring {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 9999px;
+  pointer-events: none;
+  animation: wa-pulse 3.2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+@keyframes wa-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes wa-pulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  70%, 100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* ---------------- consulting (light) skin ---------------- */
+
+.consulting-frame .wa-fab {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: #050505;
+  color: #ffffff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+.consulting-frame .wa-fab:hover { background: #262626; }
+.consulting-frame .wa-ring { border-color: rgba(5, 5, 5, 0.25); }
+
+@media (min-width: 768px) {
+  .wa-fab { right: 32px; bottom: 32px; }
+  .wa-label { display: inline-block; }
+  .wa-fab:hover .wa-label { max-width: 12rem; margin-left: 10px; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-fab { animation: none; }
+  .wa-ring { animation: none; opacity: 0; }
+}

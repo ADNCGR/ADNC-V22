@@ -1,98 +1,179 @@
 /* ------------------------------------------------------------------
-   Global header — nav pill + mode switch
-   Figma: nav 1261x77, 2px border, 27px radius, 19/24 padding,
-          logo 185x39, links Fustat Bold 20px with a 90px gutter,
-          mode switch 324x56 pinned to the top once the nav scrolls off.
+   Global header — fixed nav pill + mode switch
+   Nav: the earlier ADNC design — a translucent, fully rounded bar pinned
+        to the top that tightens and turns opaque once the page scrolls,
+        with a call-to-action on the right and a burger menu on phones.
+   Mode switch: 324x56, sits under the bar and pins beneath it on scroll.
    ------------------------------------------------------------------ */
 
 .global-header {
   position: relative;
   z-index: 1000;
   width: 100%;
-  padding-top: 20px;
+  padding-top: 96px;          /* room for the fixed bar */
   pointer-events: none;
 }
 
-.global-nav-outer {
-  display: flex;
-  justify-content: center;
-  padding: 0 var(--page-pad);
+.global-nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1100;
+  padding: 20px 0;
+  pointer-events: none;
+  transition: padding 0.5s var(--ease);
+}
+
+.global-nav-bar.is-scrolled { padding: 12px 0; }
+
+.global-nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
   pointer-events: auto;
 }
 
 .global-nav-pill {
-  width: 100%;
-  max-width: 1261px;
-  margin: 0 auto;
-  border: 2px solid #ffffff;
-  border-radius: 27px;
-  padding: 19px 24px;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   display: flex;
   align-items: center;
-  gap: clamp(24px, 8.5vw, 123px);
+  justify-content: space-between;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  padding: 0 24px;
+  background: rgba(5, 5, 5, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
+  transition: background 0.5s var(--ease), border-color 0.5s var(--ease), box-shadow 0.5s var(--ease);
+}
+
+.is-scrolled .global-nav-pill {
+  background: rgba(5, 5, 5, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
 
 .global-logo {
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  padding: 12px 0;
   text-decoration: none;
-  color: #ffffff;
+  color: inherit;
 }
 
 .global-logo-img {
-  height: clamp(26px, 2.71vw, 39px);
+  height: 32px;
   width: auto;
   display: block;
   object-fit: contain;
-  transition: opacity 0.25s var(--ease);
 }
-
-.global-logo:hover .global-logo-img { opacity: 0.78; }
 
 .global-nav-links {
   display: flex;
   align-items: center;
-  gap: clamp(20px, 6.25vw, 90px);
+  gap: 4px;
 }
 
 .global-nav-links a {
-  font-family: var(--fustat);
-  font-size: clamp(14px, 1.39vw, 20px);
-  font-weight: 700;
-  color: #ffffff;
+  padding: 8px 16px;
+  font-family: var(--inter);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
-  position: relative;
-  padding: 2px 0;
   white-space: nowrap;
-  transition: opacity 0.2s var(--ease);
+  transition: color 0.15s var(--ease);
 }
 
-/* underline grows out of the centre on hover, stays put when active */
-.global-nav-links a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -4px;
-  height: 2px;
+.global-nav-links a:hover { color: #ffffff; }
+.global-nav-links a.active { color: #ffffff; font-weight: 500; }
+
+.global-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.global-nav-cta {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 8px 16px;
+  background: #ffffff;
+  color: #050505;
+  font-family: var(--inter);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s var(--ease);
+}
+
+.global-nav-cta:hover { background: rgba(255, 255, 255, 0.9); }
+
+.global-nav-burger {
+  display: none;
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.global-nav-burger span {
+  display: block;
+  height: 1px;
   background: currentColor;
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.35s var(--ease);
+  transition: transform 0.15s var(--ease), opacity 0.15s var(--ease);
 }
 
-.global-nav-links a:hover::after { transform: scaleX(1); }
-.global-nav-links a.active::after { transform: scaleX(1); }
+.global-nav-burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.global-nav-burger.is-open span:nth-child(2) { opacity: 0; }
+.global-nav-burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.global-nav-menu {
+  display: none;
+  flex-direction: column;
+  margin-top: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 4px 16px;
+  background: #050505;
+  color: #ffffff;
+  animation: nav-menu-in 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.global-nav-menu a {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: var(--inter);
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+}
+
+.global-nav-menu a:last-child { border-bottom: 0; }
+
+@keyframes nav-menu-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 /* ---------------- mode switch ---------------- */
 
 .global-toggle-sentinel {
   height: 1px;
-  margin-top: 29px;
+  margin-top: 12px;
 }
 
 .global-toggle-outer {
@@ -104,11 +185,11 @@
 
 .global-toggle-outer.is-pinned {
   position: fixed;
-  top: 14px;
+  top: 78px;                  /* just under the scrolled nav bar */
   left: 0;
   right: 0;
   margin-top: 0;
-  z-index: 1200;
+  z-index: 1050;
   animation: nav-toggle-drop 0.4s var(--ease);
 }
 
@@ -166,25 +247,43 @@
 /* ---------------- consulting (light) skin ---------------- */
 
 .consulting-frame .global-nav-pill {
-  border-color: #000000;
-  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(222, 222, 222, 0.8);
+  background: rgba(255, 255, 255, 0.6);
+  color: #050505;
 }
 
-.consulting-frame .global-nav-links a { color: #000000; }
+.consulting-frame .is-scrolled .global-nav-pill {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(222, 222, 222, 0.8);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.consulting-frame .global-nav-links a { color: #262626; }
+.consulting-frame .global-nav-links a:hover,
+.consulting-frame .global-nav-links a.active { color: #050505; }
+
+.consulting-frame .global-nav-cta { background: #050505; color: #ffffff; }
+.consulting-frame .global-nav-cta:hover { background: #262626; }
+
+.consulting-frame .global-nav-menu {
+  border-color: #dedede;
+  background: #ffffff;
+  color: #050505;
+}
+
+.consulting-frame .global-nav-menu a {
+  border-bottom-color: #dedede;
+  color: #050505;
+}
 
 .consulting-frame .global-toggle-pill {
   background: #e4e4e4;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
 }
 
+/* ---------------- responsive ---------------- */
+
 @media (max-width: 900px) {
-  .global-nav-pill {
-    padding: 14px 18px;
-    border-radius: 22px;
-    justify-content: space-between;
-    gap: 16px;
-  }
-  .global-nav-links { gap: 16px; }
   .global-toggle-pill { width: 268px; height: 48px; }
   .global-toggle-thumb { width: 128px; height: 38px; }
   .global-toggle-pill[data-mode='consulting'] .global-toggle-thumb {
@@ -193,22 +292,19 @@
   .global-toggle-pill button { height: 38px; font-size: 14px; }
 }
 
-/* Below ~680px the four links no longer fit next to the wordmark, so the
-   pill stacks instead of clipping "Contact". */
-@media (max-width: 680px) {
-  .global-nav-pill {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 16px;
-  }
-  .global-nav-links { gap: 18px; }
-  .global-nav-links a { font-size: 13px; }
+/* links fold into the burger menu */
+@media (max-width: 767px) {
+  .global-nav-links { display: none; }
+  .global-nav-burger { display: flex; }
+  .global-nav-menu { display: flex; }
+}
+
+@media (max-width: 639px) {
+  .global-nav-pill { padding: 0 16px; }
+  .global-nav-cta { display: none; }
 }
 
 @media (max-width: 380px) {
-  .global-nav-links { gap: 12px; }
-  .global-nav-links a { font-size: 12px; }
   .global-toggle-pill { width: 240px; }
   .global-toggle-thumb { width: 114px; }
   .global-toggle-pill[data-mode='consulting'] .global-toggle-thumb {

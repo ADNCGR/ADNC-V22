@@ -17,15 +17,25 @@ const Navbar = () => {
   const { pathname } = useLocation();
   const sentinel = useRef(null);
   const [pinned, setPinned] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  // The mode switch detaches from the header and pins itself to the top of the
-  // viewport once the nav pill has scrolled away (Figma: `sticky top-0`).
+  // The nav bar tightens up and turns more opaque once the page has moved.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // The mode switch pins itself under the fixed nav bar once it would
+  // otherwise scroll beneath it.
   useEffect(() => {
     const node = sentinel.current;
     if (!node || typeof IntersectionObserver === 'undefined') return undefined;
     const io = new IntersectionObserver(
       ([entry]) => setPinned(!entry.isIntersecting),
-      { rootMargin: '0px 0px 0px 0px', threshold: 0 }
+      { rootMargin: '-78px 0px 0px 0px', threshold: 0 }
     );
     io.observe(node);
     return () => io.disconnect();
@@ -35,24 +45,51 @@ const Navbar = () => {
 
   return (
     <header className="global-header">
-      <div className="global-nav-outer">
-        <nav className="global-nav-pill">
-          <Link to="/" className="global-logo" aria-label="ADNC Group — home">
-            <img
-              src={isConsulting ? consultingLogo : adncLogo}
-              alt="ADNC Group"
-              className="global-logo-img"
-            />
-          </Link>
+      <div className={`global-nav-bar${scrolled ? ' is-scrolled' : ''}`}>
+        <div className="global-nav-inner">
+          <nav className="global-nav-pill" data-cursor="">
+            <Link to="/" className="global-logo" aria-label="ADNC Group — home">
+              <img
+                src={isConsulting ? consultingLogo : adncLogo}
+                alt="ADNC Group"
+                className="global-logo-img"
+              />
+            </Link>
 
-          <div className="global-nav-links">
-            {LINKS.map(({ to, label }) => (
-              <Link key={to} to={to} className={pathname === to ? 'active' : ''}>
-                {label}
+            <div className="global-nav-links">
+              {LINKS.map(({ to, label }) => (
+                <Link key={to} to={to} className={pathname === to ? 'active' : ''}>
+                  {label}
+                </Link>
+              ))}
+            </div>
+
+            <div className="global-nav-actions">
+              <Link to="/contact" className="global-nav-cta">
+                {isConsulting ? 'Book consultation' : 'Start a project'}
               </Link>
-            ))}
-          </div>
-        </nav>
+              <button
+                type="button"
+                className={`global-nav-burger${open ? ' is-open' : ''}`}
+                aria-label="Menu"
+                aria-expanded={open}
+                onClick={() => setOpen((s) => !s)}
+              >
+                <span /><span /><span />
+              </button>
+            </div>
+          </nav>
+
+          {open && (
+            <div className="global-nav-menu">
+              {LINKS.map(({ to, label }) => (
+                <Link key={to} to={to} onClick={() => setOpen(false)}>
+                  {label}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <div ref={sentinel} className="global-toggle-sentinel" aria-hidden="true" />
