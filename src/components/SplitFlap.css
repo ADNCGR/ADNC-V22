@@ -1,0 +1,124 @@
+/* Split-flap board — black flaps, white letters, a hinge across the middle */
+
+.sf {
+  --cw: clamp(21px, 4.1vw, 60px);      /* cell width */
+  --ch: calc(var(--cw) * 1.42);        /* cell height */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.sf-label {
+  font-family: var(--fustat);
+  font-weight: 500;
+  font-size: clamp(14px, 1.2vw, 18px);
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.5s var(--ease);
+}
+
+.sf.is-final .sf-label { color: #fff; }
+
+.sf-board {
+  display: inline-flex;
+  gap: clamp(3px, 0.35vw, 5px);
+  padding: clamp(8px, 0.9vw, 12px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  background: linear-gradient(#0d0d0d, #050505);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: border-color 0.6s var(--ease), box-shadow 0.6s var(--ease);
+}
+
+/* the final word lights the board */
+.sf.is-final .sf-board {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 60px rgba(255, 255, 255, 0.12);
+}
+
+.sf-cell {
+  position: relative;
+  width: var(--cw);
+  height: var(--ch);
+  perspective: calc(var(--ch) * 4);
+  font-family: var(--fustat);
+  font-weight: 800;
+  font-size: calc(var(--ch) * 0.62);
+  color: #f2f2f2;
+}
+
+.sf-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  overflow: hidden;
+  background: linear-gradient(#232323, #171717);
+}
+
+.sf-half > span {
+  display: block;
+  height: var(--ch);
+  line-height: var(--ch);
+  text-align: center;
+  white-space: pre;
+}
+
+.sf-top,
+.sf-flap-top {
+  top: 0;
+  border-radius: 5px 5px 0 0;
+  border-bottom: 1px solid #000;       /* the hinge */
+}
+
+.sf-bottom,
+.sf-flap-bottom {
+  bottom: 0;
+  border-radius: 0 0 5px 5px;
+  background: linear-gradient(#141414, #1c1c1c);
+}
+
+/* the lower halves show the bottom of the letter */
+.sf-bottom > span,
+.sf-flap-bottom > span { transform: translateY(-50%); }
+
+.sf-flap-top,
+.sf-flap-bottom {
+  z-index: 2;
+  backface-visibility: hidden;
+  visibility: hidden;
+}
+
+.sf-flap-top { transform-origin: bottom; }
+.sf-flap-bottom { transform-origin: top; transform: rotateX(90deg); }
+
+.sf-cell.is-flipping .sf-flap-top,
+.sf-cell.is-flipping .sf-flap-bottom { visibility: visible; }
+
+.sf-cell.is-flipping .sf-flap-top { animation: sf-fall 32ms ease-in forwards; }
+.sf-cell.is-flipping .sf-flap-bottom { animation: sf-land 32ms ease-out 32ms forwards; }
+
+/* the falling flap darkens as it turns away from the light */
+@keyframes sf-fall {
+  from { transform: rotateX(0deg); filter: brightness(1); }
+  to { transform: rotateX(-90deg); filter: brightness(0.55); }
+}
+
+@keyframes sf-land {
+  from { transform: rotateX(90deg); filter: brightness(1.35); }
+  to { transform: rotateX(0deg); filter: brightness(1); }
+}
+
+.sf-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-cell.is-flipping .sf-flap-top,
+  .sf-cell.is-flipping .sf-flap-bottom { animation: none; visibility: hidden; }
+}

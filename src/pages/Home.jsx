@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ConsultingHome from './ConsultingHome';
+import PartnerDuo from '../components/PartnerDuo';
+import SplitFlap from '../components/SplitFlap';
 import { useMode } from '../context/ModeContext';
 import { useReveal, useScrollProgress } from '../hooks/useScrollFx';
 
@@ -116,22 +118,6 @@ const STEPS = [
       'Launch is where the engagement starts, not where it ends.',
     ],
   },
-];
-
-const MAKE_IT_REAL = [
-  'Web platforms, native iOS & Android',
-  'Observability, incident response & on-call',
-  'Distributed & real-time backends',
-  'Documented handover, or none if we stay',
-  'Production infrastructure & CI/CD',
-];
-
-const INVENT = [
-  'Concept framing & feasibility analysis',
-  'Rapid prototyping in days',
-  'Applied research & technical spikes',
-  'Written feasibility report & cost envelope',
-  'Algorithm and system design',
 ];
 
 const Home = () => {
@@ -250,40 +236,13 @@ const Home = () => {
         <p className="hm-partner-sub">Nothing off the shelf.</p>
       </div>
 
-      {/* ===================== TWO STACKED CARDS ======================= */}
+      {/* ================== INVENT → MAKE IT REAL ====================== */}
       <section className="hm-duo">
         <div className="hm-duo-line" data-scroll-progress data-start="0.95" data-end="0.15">
           <img src={lignePath} alt="" aria-hidden="true" />
         </div>
 
-        <div className="hm-duo-stage">
-          <article className="hm-duo-card hm-duo-card--back reveal-left">
-            <h3 className="u-outline-dark hm-duo-title">Make it real.</h3>
-            <p className="hm-duo-body">
-              An idea becomes real the day a stranger uses it at three in the morning and nothing
-              breaks. We engineer it, we deploy it, we instrument it, and we take the on-call
-              rotation ourselves. The engineers who designed your system are the ones who answer
-              when it fails. In our experience that is the only arrangement which reliably produces
-              systems that do not.
-            </p>
-            <div className="hm-duo-tags">
-              {MAKE_IT_REAL.map((t) => <span key={t}>{t}</span>)}
-            </div>
-          </article>
-
-          <article className="hm-duo-card hm-duo-card--front reveal-right">
-            <h3 className="u-outline-dark hm-duo-title">Invent.</h3>
-            <p className="hm-duo-body">
-              Most teams build what you describe. We get called in when nobody can describe it yet.
-              So we start at the version everyone calls impossible and work backwards from there,
-              separating what is genuinely unknown from what only looks that way. You get that
-              analysis in writing before we commit a single line of production code.
-            </p>
-            <div className="hm-duo-tags">
-              {INVENT.map((t) => <span key={t}>{t}</span>)}
-            </div>
-          </article>
-        </div>
+        <PartnerDuo />
       </section>
 
       {/* ===================== SERVICES ACCORDIONS ===================== */}
@@ -374,6 +333,8 @@ const Home = () => {
       <section className="hm-cta" id="contact">
         <span className="u-glow hm-cta-glow" aria-hidden="true" />
         <div className="hm-cta-inner reveal">
+          {/* what others called the problem, flipping over to what we did */}
+          <SplitFlap />
           <h2 className="hm-cta-title">
             <span>Got something</span>
             <span className="u-outline">nobody will take on?</span>

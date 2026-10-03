@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import ConsultingFooter from '../components/ConsultingFooter';
+import DecisionJourney from '../components/DecisionJourney';
 import '../components/consulting-standard.css';
 import './ConsultingHome.css';
 import buildingImg from '../assets/37e6d3a4815a48fb00ce36f0521c1530589212f1.png';
@@ -184,23 +185,8 @@ const ConsultingHome = () => {
         </div>
       </div>
 
-      {/* PROCESS */}
-      <section className="c-process">
-        <h2>From an uncertain decision<br />to a defensible one.</h2>
-        {[
-          { title: 'Frame', text: 'We establish what is being decided, by whom, by when, and what a good outcome would actually look like. A written engagement scope is issued before any work starts. A fair number of engagements resolve at this stage, because the question first asked turns out not to be the one that mattered.' },
-          { title: 'Establish the evidence', text: 'Interviews at every relevant level, review of operational and financial documentation, market analysis, and independent verification of the assumptions holding up the existing plan. We record what we verified, what we inferred, and what could not be established at all.' },
-          { title: 'Model the alternatives', text: 'Every realistic course of action gets modelled. Expected outcomes, downside exposure, capital and organisational requirements, and the specific conditions under which it would fail.' },
-          { title: 'Recommend', text: 'Findings go to the sponsoring body with a clear recommendation, the alternatives we considered, the risks attached to each one, and an explicit statement of what would have to change for our advice to change with it.' },
-          { title: 'Accompany', text: 'Where the organisation decides to proceed, we can support execution. Through programme governance, or through our engineering division, under the same named accountability.' },
-        ].map((step) => (
-          <div className="c-process-row" key={step.title}>
-            <h3>{step.title}</h3>
-            <div className="c-process-divider"></div>
-            <p>{step.text}</p>
-          </div>
-        ))}
-      </section>
+      {/* PROCESS — uncertainty organised into a decision, as you scroll */}
+      <DecisionJourney />
 
       {/* WHY ADNC */}
       <section className="c-why">

@@ -8,10 +8,13 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Cursor from './components/Cursor';
 import WhatsAppCta from './components/WhatsAppCta';
+import { useInteractions } from './hooks/useInteractions';
 import './index.css';
+import './motion.css';   // after the page stylesheets, on purpose
 
 const MainLayout = () => {
   const { mode } = useMode();
+  useInteractions();
 
   return (
     <div className={`site-frame ${mode === 'consulting' ? 'consulting-frame' : ''}`}>

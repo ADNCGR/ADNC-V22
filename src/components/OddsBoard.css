@@ -1,0 +1,78 @@
+/* "Confidence, stated plainly" — copy on the left, the board on the right */
+
+.ob-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 80px);
+  align-items: center;
+}
+
+.ob-copy .pr-h2 { text-align: left; }
+
+/* the three levels: the word is a switch for the board */
+.ob-level {
+  transition: opacity 0.4s var(--ease);
+}
+
+.ob-key {
+  position: relative;
+  padding: 0 0 2px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ob-key::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease-out-expo);
+}
+
+.ob-key:hover::after,
+.ob-level.is-on .ob-key::after { transform: scaleX(1); }
+
+.pr-conf-body .ob-level:not(.is-on) { opacity: 0.5; }
+
+.ob-board {
+  position: relative;
+  margin: 0;
+  padding: clamp(16px, 2vw, 26px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 20px;
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgba(255, 255, 255, 0.06), transparent 60%),
+    #050505;
+}
+
+.ob-canvas {
+  display: block;
+  width: 100%;
+  height: clamp(380px, 38vw, 540px);
+}
+
+.ob-caption {
+  margin-top: 10px;
+  min-height: 2.6em;
+  font-family: var(--fustat);
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.65);
+  text-align: center;
+}
+
+.ob-caption strong { color: #fff; font-weight: 700; }
+
+@media (max-width: 900px) {
+  .ob-grid { grid-template-columns: minmax(0, 1fr); }
+  .ob-canvas { height: 340px; }
+}

@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import ConsultingFooter from '../components/ConsultingFooter';
 import { useMode } from '../context/ModeContext';
 import { useReveal } from '../hooks/useScrollFx';
+import ReadingTrail, { Words } from '../components/ReadingTrail';
 import './About.css';
 
 /* Figma 22:2754 (Development) and 22:2965 (Consulting) share one layout:
@@ -67,12 +68,23 @@ const CONS = {
   ctaSolid: 'Request an initial assessment',
 };
 
+// data-trail: the margin pen loops here, then the words fill in as it passes
 const Principle = ({ item, delay }) => (
-  <div className="ab-principle reveal" style={{ transitionDelay: `${delay}s` }}>
+  <div className="ab-principle reveal" style={{ transitionDelay: `${delay}s` }} data-trail="" data-fx-skip="">
     <h3>{item.title}</h3>
-    <p>{item.body}</p>
+    <p><Words text={item.body} /></p>
   </div>
 );
+
+// the lede as one run of words, numbered across its paragraphs
+const Lede = ({ lines }) => {
+  let from = 0;
+  return lines.map((line) => {
+    const start = from;
+    from += line.split(' ').length;
+    return <p key={line}><Words text={line} from={start} /></p>;
+  });
+};
 
 const About = () => {
   const { mode } = useMode();
@@ -85,6 +97,7 @@ const About = () => {
 
   return (
     <div className={`ab-root${isConsulting ? ' ab-root--cons' : ''}`}>
+      <ReadingTrail watch={mode} />
       <Navbar />
 
       <section className="ab-hero">
@@ -94,8 +107,8 @@ const About = () => {
       <hr className="ab-rule" />
 
       <section className="ab-intro">
-        <div className="ab-intro-copy reveal">
-          {data.lede.map((line) => <p key={line}>{line}</p>)}
+        <div className="ab-intro-copy reveal" data-trail="" data-fx-skip="">
+          <Lede lines={data.lede} />
         </div>
       </section>
 

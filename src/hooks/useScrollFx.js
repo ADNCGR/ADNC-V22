@@ -19,6 +19,7 @@ const FX_KINDS = [
   ['sub', (el) => /^H[3-5]$/.test(el.tagName)],
   ['rule', (el) => el.tagName === 'HR'],
   ['pop', (el) => el.matches('.btn-pill, .btn-square, a[class*="cta"], a[class*="btn"]')],
+  ['row', (el) => Array.from(el.classList).some((c) => /(^|-)row$/.test(c))],
   ['item', (el) => el.tagName === 'LI'],
   ['text', (el) => el.tagName === 'P' || el.tagName === 'BLOCKQUOTE'],
 ];
@@ -28,7 +29,7 @@ const FX_CANDIDATES = 'article, details, div, section, img, video, h1, h2, h3, h
 // Regions that animate themselves or must stay put.
 const FX_SKIP = [
   '.global-header', 'footer', '[class*="footer"]', '.ds', '[class*="marquee"]',
-  '[aria-hidden="true"]', '.cursor-blob', '[data-fx]', '[data-fx-done]',
+  '[aria-hidden="true"]', '.cursor-blob', '[data-fx-skip]', '[data-fx]', '[data-fx-done]',
 ].join(', ');
 
 function tagEntrances() {

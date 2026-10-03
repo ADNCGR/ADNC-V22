@@ -3,6 +3,7 @@
    ================================================================== */
 
 .ab-root {
+  position: relative;          /* the margin pen (ReadingTrail) is placed against it */
   background: #000;
   color: #fff;
   font-family: var(--fustat);

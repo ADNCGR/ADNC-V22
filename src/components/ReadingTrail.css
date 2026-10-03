@@ -1,0 +1,71 @@
+/* The pen stroke in the margin; colour follows the page (currentColor). */
+
+.rt {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rt-ghost { stroke-opacity: 0.1; stroke-width: 1.2; }
+
+.rt-ink {
+  stroke-width: 2;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.35));
+  transition: stroke-dashoffset 0.25s linear;
+}
+
+.ab-root--cons .rt-ink { filter: none; }
+
+.rt-tip { fill: currentColor; stroke: none; transition: cx 0.25s linear, cy 0.25s linear; }
+
+.rt-halo {
+  fill: none;
+  stroke-width: 1.2;
+  stroke-opacity: 0.6;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rt-halo 1.6s var(--ease) infinite;
+  transition: cx 0.25s linear, cy 0.25s linear;
+}
+
+@keyframes rt-halo {
+  from { transform: scale(0.4); stroke-opacity: 0.7; }
+  to { transform: scale(1.6); stroke-opacity: 0; }
+}
+
+.rt-node {
+  fill: currentColor;
+  stroke: none;
+  opacity: 0.2;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity 0.4s var(--ease), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.rt-node.is-on { opacity: 1; transform: scale(1.35); }
+
+/* words fill in as the pen goes through their block */
+.rt-w {
+  opacity: clamp(0.16, calc(var(--reveal, 1) * var(--n, 1) - var(--w, 0) + 1), 1);
+  transition: opacity 0.3s var(--ease);
+}
+
+/* a block's title lights and steps in when the pen arrives */
+[data-trail] h3 {
+  opacity: 0.32;
+  transition: opacity 0.5s var(--ease), translate 0.6s var(--ease-out-expo);
+}
+
+[data-trail].is-lit h3 { opacity: 1; translate: 6px 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rt-halo { animation: none; opacity: 0; }
+}

@@ -17,6 +17,7 @@ import modelImg from '../assets/process-model.png';
 import scoreImg from '../assets/process-score.png';
 import trackImg from '../assets/process-track.png';
 
+import { ConfidenceSection } from '../components/OddsBoard';
 import './Process.css';
 
 /* ================================================================
@@ -127,21 +128,8 @@ const DevelopmentProcess = () => {
 
       <hr className="pr-rule" />
 
-      <section className="pr-confidence">
-        <div className="pr-shell">
-          <h2 className="pr-h2 reveal">Confidence, stated plainly</h2>
-          <div className="pr-conf-body reveal">
-            <p>Every conclusion in a feasibility report is labelled by what actually supports it.</p>
-            <p><b>Proven</b> <span>means we tested it ourselves and it held.</span></p>
-            <p><b>Probable</b> <span>means the evidence points one way but has not been run end to end.</span></p>
-            <p><b>Unproven</b> <span>means we genuinely do not know yet.</span></p>
-            <p>
-              We would rather write unproven than dress up a guess as a fact, and clients tell us
-              that is the part they end up trusting most.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* the three confidence levels, drawn by a Galton board */}
+      <ConfidenceSection />
 
       <hr className="pr-rule" />
 

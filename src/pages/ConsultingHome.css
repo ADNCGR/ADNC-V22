@@ -4,7 +4,7 @@
   color: #000;
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;       /* clip, not hidden: hidden would break the sticky process stage */
 }
 
 /* HERO */
@@ -403,57 +403,6 @@
 .card-5 { grid-column: 3; grid-row: 2; align-self: start; height: 401px; transform: rotate(11deg); }
 .card-5 .card-deco { left: 329.76px; top: 134px; width: 68.42px; }
 
-/* PROCESS */
-.c-process {
-  width: 100%;
-  max-width: 100%;
-  margin: 90px 0;
-  padding: 0 clamp(20px, 5vw, 80px);
-}
-
-.c-process > h2 {
-  font-size: clamp(26px, 3.8vw, 40px);
-  font-weight: 700;
-  line-height: 1.25;
-  margin: 0 0 48px;
-}
-
-.c-process-row {
-  display: grid;
-  grid-template-columns: 210px 2px 1fr;
-  gap: 0 36px;
-  align-items: start;
-  padding: 28px 0;
-  border-top: 1px solid #e0e0e0;
-}
-
-.c-process-row:last-child {
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.c-process-row h3 {
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0;
-  padding-top: 2px;
-}
-
-.c-process-divider {
-  width: 2px;
-  height: 42px;
-  background: #898989;
-  margin-top: 4px;
-}
-
-.c-process-row p {
-  font-family: 'IBM Plex Sans', Inter, sans-serif;
-  font-size: 14.5px;
-  line-height: 1.55;
-  margin: 0;
-  max-width: 620px;
-  color: #111;
-}
-
 /* WHY ADNC */
 .c-why {
   width: 100%;
@@ -619,8 +568,6 @@
     margin-bottom: 36px;
   }
   .c-why-grid { grid-template-columns: 1fr; }
-  .c-process-row { grid-template-columns: 1fr; gap: 10px; }
-  .c-process-divider { display: none; }
   .c-intro-image {
     max-width: 100%;
     flex: 1 1 100%;
@@ -634,7 +581,7 @@
   .c-advise-num { font-size: 48px; flex-basis: 48px; }
   .c-cards-scatter { grid-template-columns: 1fr; }
   .c-services-band { padding: 36px 24px; }
-  .c-partner, .c-advise, .c-process, .c-why, .c-final-cta, .c-cards-area {
+  .c-partner, .c-advise, .c-why, .c-final-cta, .c-cards-area {
     padding-left: 20px;
     padding-right: 20px;
   }
